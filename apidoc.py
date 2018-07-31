@@ -33,37 +33,64 @@ This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details."""
 
-example="""#!optional = optional\n
-{"title":"API Title",
- "description":"API Description",
- "host":"http://endpoint.host",
- "requests":[ #!optional
-	     {"title":"Request title",
-              "method":"Method",
-              "description":"Request description",
-              "url":"/api/request",
-              "parameters":[ #!optional
-	          {"name":"parameter1",
-		   "type":"data type",
-		   "optional":false,
-		   "description":"Parameter description"}],
-	      
-	      "examples":[ #!optional
-	          {"description":"Example request description",
-		   "type":"request",
-		   "method":"POST",
-		   "protocol":"HTTP/1.1", #!optional
-		   "headers":[{"key":"Header key 1", "value":"Header value 1"}], #!optional
-		   "body":"parameter1=value1&amp;parameter2=value2"}, #!optional
-			 
-		  {"description":"Example response description",
-		   "type":"response",
-		   "protocol":"HTTP/1.1", #!optional
-		   "status":"200 OK",
-		   "headers":[{"key":"Header key 1", "value":"Header value 1"}], #!optional
-		   "body":"{'key1':'value1', 'key2':'value2', 'key3':'value3'}"}] #!optional
-	      }]
-}"""
+example="""
+{
+  "title": "API Title",
+  "description": "API Description",
+  "host": "http://endpoint.host",
+  "requests": [
+    {
+      "title": "Request title",
+      "method": "Method",
+      "description": "Request description",
+      "url": "/api/request",
+      "parameters": [
+        {
+          "name": "parameter1",
+          "type": "data type",
+          "optional": false,
+          "description": "Parameter description"
+        }
+      ],
+      "examples": [
+        {
+          "description": "Example request description",
+          "type": "request",
+          "method": "POST",
+          "protocol": "HTTP/1.1",
+          "headers": [
+            {
+              "key": "Header key 1",
+              "value": "Header value1"
+            }
+          ],
+          "body": [
+            "line 1: parameter1=value1&amp;",
+            "line 2: parameter2=value2"
+          ]
+        },
+        {
+          "description": "Example response description",
+          "type": "response",
+          "protocol": "HTTP/1.1",
+          "status": "200 OK",
+          "headers": [
+            {
+              "key": "Header key 1",
+              "value": "Header value 1"
+            }
+          ],
+          "body": [
+            "line 1: {'key1':'value1',",
+            "line 2: &emsp;'key2':'value2',",
+            "line 3: &emsp;'key3':'value3'}"
+          ]
+        }
+      ]
+    }
+  ]
+}
+"""
 
 # Argument validation
 if len(sys.argv) == 2:
@@ -141,21 +168,22 @@ for i in json_apidoc['requests']:
     dom_parameter_table.append("<thead><tr><th>Name</th><th>Type</th><th>Optional</th><th>Description</th></tr></thead>")
     dom_parameter_table.append("<tbody></tbody>")
     dom_parameter_tbody = dom_parameter_table.find('tbody')
-    for j in i['parameters']:
-        dom_parameter_tbody.append("<tr></tr>")
-        dom_parameter_tr = dom_parameter_tbody.find('tr').last()
-        # Parameter Name
-        if 'name' in j: dom_parameter_tr.append("<td>"+j['name']+"</td>")
-        else: raise Exception('Missing parameter name')
-        # Parameter Type
-        if 'type' in j: dom_parameter_tr.append("<td>"+j['type']+"</td>")
-        else: raise Exception('Missing parameter type')
-        # Parameter Optional
-        if 'optional' in j: dom_parameter_tr.append("<td>"+str(j['optional'])+"</td>")
-        else: raise Exception('Missing parameter optional')
-        # Parameter Description
-        if 'description' in j: dom_parameter_tr.append("<td>"+j['description']+"</td>")
-        else: raise Exception('Missing parameter description')
+    if 'parameters' in i:
+        for j in i['parameters']:
+            dom_parameter_tbody.append("<tr></tr>")
+            dom_parameter_tr = dom_parameter_tbody.find('tr').last()
+            # Parameter Name
+            if 'name' in j: dom_parameter_tr.append("<td>"+j['name']+"</td>")
+            else: raise Exception('Missing parameter name')
+            # Parameter Type
+            if 'type' in j: dom_parameter_tr.append("<td>"+j['type']+"</td>")
+            else: raise Exception('Missing parameter type')
+            # Parameter Optional
+            if 'optional' in j: dom_parameter_tr.append("<td>"+str(j['optional'])+"</td>")
+            else: raise Exception('Missing parameter optional')
+            # Parameter Description
+            if 'description' in j: dom_parameter_tr.append("<td>"+j['description']+"</td>")
+            else: raise Exception('Missing parameter description')
 
     # Request Examples
     if 'examples' in i:
@@ -194,7 +222,14 @@ for i in json_apidoc['requests']:
             
             # Example Body
             if 'body' in j:
-                dom_example_table.append("<tr><td><code style='display:block; white-space: pre-line;'>"+j['body']+"</code></td></tr>")
+                if type(j['body']) is str:
+                    dom_example_table.append("<tr><td><code style='display:block; white-space: pre-line;'>"+j['body']+"</code></td></tr>")
+                elif type(j['body']) is list:
+                    body = ''
+                    for i in j['body']:
+                        body += i + '\n'
+                    body = body[:-1]
+                    dom_example_table.append("<tr><td><code style='display:block; white-space: pre-line;'>"+body+"</code></td></tr>")
 
 # Footer
 dom_body.append('''<footer><div class="container py-5">

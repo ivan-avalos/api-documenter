@@ -33,7 +33,7 @@
                         {"key":"Accept", "value":"application/json"}
                     ],
 
-                    "body":"name=Juan Trump&amp;\nphone=+52 461 111 11 11"
+                    "body":["name=Juan Trump&amp;", "phone=+52 461 111 11 11"]
                 },
                 {
                     "description":"Example of response",
@@ -64,7 +64,7 @@
 			{"key":"Content-Type", "value":"application/json"},
 			{"key":"Status", "value":"200 OK"}
                     ],
-                    "body":"[{'id':1, 'name':'Juan Trump', 'phone':'+52 461 111 11 11'},\n{'id':2, 'name':'Juana Clinton', 'phone':'+52 461 111 22 33'}]"
+                    "body":["[{'id':1, 'name':'Juan Trump', 'phone':'+52 461 111 11 11'},","{'id':2, 'name':'Juana Clinton', 'phone':'+52 461 111 22 33'}]"]
                 }
             ]
         },
