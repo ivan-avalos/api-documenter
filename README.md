@@ -27,7 +27,7 @@ apidoc --help
   "title": "API Title",
   "description": "API Description",
   "host": "http://endpoint.host",
-  "requests": [...], <-------------------- optional
+  "requests": [], optional
 }
 ```
 
@@ -39,8 +39,8 @@ apidoc --help
   "method": "Method",
   "description": "Request description",
   "url": "/api/request",
-  "parameters": [...], <------------------ optional
-  "examples":[...] <---------------------- optional
+  "parameters": [], optional
+  "examples":[] optional
   
 }
 ```
@@ -63,18 +63,16 @@ apidoc --help
   "description": "Example request description",
   "type": "request",
   "method": "POST",
-  "protocol": "HTTP/1.1", <---------------------- optional
-  "headers": [ <--------------------------------- optional
+  "protocol": "HTTP/1.1", optional
+  "headers": [ optional
     {
       "key": "Header key 1",
       "value": "Header value 1"
-    },
-    ...
+    }
   ],
-  "body": [ <------------------------------------ optional
+  "body": [ optional
     "line 1 of body",
-    "line 2 of body",
-    ...
+    "line 2 of body"
   ]
 }
 ```
@@ -85,19 +83,17 @@ apidoc --help
 {
   "description": "Example response description",
   "type": "response",
-  "protocol": "HTTP/1.1", <---------------------- optional
+  "protocol": "HTTP/1.1", optional
   "status": "200 OK",
-  "headers": [ <--------------------------------- optional
+  "headers": [ optional
     {
       "key": "Header key 1",
       "value": "Header value 1"
     },
-    ...
   ],
-  "body": [ <------------------------------------ optional
+  "body": [ optional
     "line 1 of body",
     "line 2 of body",
-    ...
   ]
 }
 ```
