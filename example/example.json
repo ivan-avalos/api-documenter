@@ -1,0 +1,153 @@
+{ 
+    "title":"Phone directory CRUD API",
+    "description":"This is an example CRUD for a phone directory API, it includes the most basic database operations via JSON.",
+    "host":"http://crud.host",
+    "requests":[
+        {
+            "title":"Create a phone number",
+            "method":"POST",
+            "description":"Insert a phone number into phone database.",
+            "url":"/api/request",
+            "parameters":[
+                {
+                    "name":"name",
+                    "type":"string",
+                    "optional":true,
+                    "description":"Name of the owner of the phone number"
+                },
+                {
+                    "name":"phone",
+                    "type":"string",
+                    "optional":true,
+                    "description":"Phone number of the owner"
+                }
+            ],
+            "examples":[
+                {
+                    "description":"Example of request",
+                    "type":"request",
+                    "method":"POST",
+                    "protocol":"HTTP/1.1",
+                    "headers":[
+			{"key":"Content-Type", "value":"application/x-www-form-urlencoded"},
+                        {"key":"Accept", "value":"application/json"}
+                    ],
+
+                    "body":"name=Juan Trump&amp;\nphone=+52 461 111 11 11"
+                },
+                {
+                    "description":"Example of response",
+                    "type":"response",
+                    "protocol":"HTTP/1.1",
+                    "status":"200 OK",
+                    "headers":[
+			{"key":"Content-Type", "value":"application/json"},
+			{"key":"Status", "value":"200 OK"}
+                    ],
+                    "body":"{'error':false}"
+                }
+            ]
+        },
+	{
+            "title":"Get all phone numbers",
+            "method":"GET",
+            "description":"Retrieve all phone numbers from phone directory database.",
+            "url":"/api/retrieve",
+            "parameters":[],
+            "examples":[
+                {
+                    "description":"Example of response",
+                    "type":"response",
+                    "protocol":"HTTP/1.1",
+                    "status":"200 OK",
+                    "headers":[
+			{"key":"Content-Type", "value":"application/json"},
+			{"key":"Status", "value":"200 OK"}
+                    ],
+                    "body":"[{'id':1, 'name':'Juan Trump', 'phone':'+52 461 111 11 11'},\n{'id':2, 'name':'Juana Clinton', 'phone':'+52 461 111 22 33'}]"
+                }
+            ]
+        },
+	{
+	    "title":"Get specific phone number",
+	    "method":"GET",
+	    "description":"Retrieve a single phone number",
+	    "url":"/api/retrieve",
+	    "parameters":[
+		{"name":"id", "type":"int", "optional":false, "description":"ID of the existing phone number"}
+	    ],
+	    "examples":[
+		{
+		    "description":"Example response",
+		    "type":"response",
+		    "method":"GET",
+		    "protocol":"HTTP/1.1",
+		    "status":"200 OK",
+		    "headers":[
+			{"key":"Content-Type", "value":"application/json"},
+			{"key":"Status", "value":"200 OK"}
+		    ],
+		    "body":"{'id':1, 'name':'Juan Trump', 'phone':'+52 461 111 11 11'}"
+		}
+	    ]
+	},
+	{
+            "title":"Update phone number",
+            "method":"POST",
+            "description":"Edit existing phone number.",
+            "url":"/api/update",
+            "parameters":[
+		{"name":"id", "type":"int", "optional":true, "description":"ID of the existing phone number"},
+		{"name":"name", "type":"string", "optional":false, "description":"Name of the owner of the phone number"},
+		{"name":"phone", "type":"string", "optional":false, "description":"Phone number of the owner"}
+	    ],
+            "examples":[
+                {
+                    "description":"Example request",
+                    "type":"request",
+		    "method":"POST",
+                    "protocol":"HTTP/1.1",
+                    "headers":[
+			{"key":"Content-Type", "value":"application/x-www-form-urlencoded"}
+                    ],
+                    "body":"id=1&amp;\nname=Juanito Trump&amp;\nphone=+52 461 000 00 00"
+                },
+		{
+		    "description":"Example response",
+		    "type":"response",
+		    "status":"200 OK",
+		    "protocol":"HTTP/1.1",
+		    "headers":[
+			{"key":"Content-Type", "value":"application/json"},
+			{"key":"Status", "value":"200 OK"}
+		    ],
+		    "body":"{'error':false}"
+		}
+            ]
+        },
+	{
+	    "title":"Delete phone number",
+	    "method":"GET",
+	    "description":"Remove existing phone number permanently.",
+	    "url":"/api/delete",
+	    "parameters":[
+		{"name":"id", "type":"int", "optional":false, "description":"ID of existing phone number"}
+	    ],
+	    "examples":[
+		{
+		    "description":"Example response",
+		    "type":"response",
+		    "method":"POST",
+		    "protocol":"HTTP/1.1",
+		    "status":"200 OK",
+		    "headers":[
+			{"key":"Content-Type", "value":"application/json"},
+			{"key":"Status", "value":"200 OK"}
+		    ],
+		    "body":"{'error':false}"
+		}
+	    ]
+	}
+
+    ]
+}
