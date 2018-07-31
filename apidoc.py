@@ -89,6 +89,58 @@ example="""
       ]
     }
   ]
+}{
+  "title": "API Title",
+  "description": "API Description",
+  "host": "http://endpoint.host",
+  "requests": [
+    {
+      "title": "Request title",
+      "method": "Method",
+      "description": "Request description",
+      "url": "/api/request",
+      "parameters": [
+        {
+          "name": "parameter1",
+          "type": "data type",
+          "optional": false,
+          "description": "Parameter description"
+        }
+      ],
+      "examples": [
+        {
+          "description": "Example request description",
+          "type": "request",
+          "method": "POST",
+          "protocol": "HTTP/1.1",
+          "headers": [
+            {
+              "key": "Header key 1",
+              "value": "Header value1"
+            }
+          ],
+          "body": "single line body"
+        },
+        {
+          "description": "Example response description",
+          "type": "response",
+          "protocol": "HTTP/1.1",
+          "status": "200 OK",
+          "headers": [
+            {
+              "key": "Header key 1",
+              "value": "Header value 1"
+            }
+          ],
+          "body": [
+            "line 1 of body",
+            "line 2 of body",
+            "line 3 of body"
+          ]
+        }
+      ]
+    }
+  ]
 }
 """
 

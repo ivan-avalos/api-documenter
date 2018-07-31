@@ -1,35 +1,39 @@
-	      api-documenter - easiest way of document your APIs
+# api-documenter - easiest way of document your APIs
 
 api-documenter is a simple Python script that allows you to generate beautiful
 HTML documentation from a JSON file with a single command.
 
-Requirements
-============
+## Requirements
 - Python 3.*
 
-Credits
-=======
+## Credits
 - htmldom Python library - Bhimsen.S.Kulkarni (BSD License)
   <https://pypi.org/project/htmldom/>
 
-Installation
-============
+## Installation
+
+```bash
 chmod +x install.sh
 ./install.sh
 apidoc --help
+```
 
-JSON Structure
-==============
+## Structure
 
-# API
+### API
+
+```json
 {
   "title": "API Title",
   "description": "API Description",
   "host": "http://endpoint.host",
   "requests": [...], <-------------------- optional
 }
+```
 
-# Request
+### Request
+
+```json
 {
   "title": "Request title",
   "method": "Method",
@@ -39,16 +43,22 @@ JSON Structure
   "examples":[...] <---------------------- optional
   
 }
+```
 
-# Parameter
+### Parameter
+
+```json
 {
   "name": "parameter1",
   "type": "data type",
   "optional": false,
   "description": "Parameter description"
 }
+```
 
-# Request example
+### Request example
+
+```json
 {
   "description": "Example request description",
   "type": "request",
@@ -67,8 +77,11 @@ JSON Structure
     ...
   ]
 }
+```
 
-# Response example
+### Response example
+
+```json
 {
   "description": "Example response description",
   "type": "response",
@@ -87,9 +100,11 @@ JSON Structure
     ...
   ]
 }
+```
 
-Full structure
-==============
+### Full structure
+
+```json
 {
   "title": "API Title",
   "description": "API Description",
@@ -120,10 +135,7 @@ Full structure
               "value": "Header value1"
             }
           ],
-          "body": [
-            "line 1 of body",
-            "line 2 of body"
-          ]
+          "body": "single line body"
         },
         {
           "description": "Example response description",
@@ -146,3 +158,4 @@ Full structure
     }
   ]
 }
+```
