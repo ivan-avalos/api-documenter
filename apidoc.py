@@ -139,7 +139,7 @@ dom_container = dom_body.find("div.container")
 # API Title
 dom_container.append("<h1 class='mt-3'>"+json_apidoc['title']+"</h1>")
 # API Description
-dom_container.append("<div class='card mb-3'><div class='card-body'>"+json_apidoc['description']+"</div></div>")
+dom_container.append("<div class='card mb-3'><div class='card-body'><p class='card-text lead'>"+json_apidoc['description']+"</p></div></div>")
 
 # Request Index
 dom_container.append("<div class='card mb-3 index'><div class='card-body'><h1>Index</h1></div>")
@@ -163,7 +163,7 @@ for i in json_apidoc['requests']:
     dom_request_card_body = dom_request_card.find('div.card-body').last()
     
     # Request Description
-    if 'description' in i: dom_request_card_body.append("<p>"+i['description']+"</p>")
+    if 'description' in i: dom_request_card_body.append("<p class='card-text lead'>"+i['description']+"</p>")
     else: raise Exception('Missing request description')
     # Request URL
     if 'method' in i:
