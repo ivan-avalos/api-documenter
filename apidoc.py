@@ -172,9 +172,9 @@ for i in json_apidoc['requests']:
 
     # Request Parameters
     dom_request_card_body.append("<h5>Parameters</h5>")
-    dom_request_card_body.append("<table class='table table-bordered parameter'></table>")
-    dom_parameter_table = dom_container.find('table.parameter').last()
-    dom_parameter_table.append("<thead><tr><th>Name</th><th>Type</th><th>Optional</th><th>Description</th></tr></thead>")
+    dom_request_card_body.append("<div class='table-responsive-sm parameters'><table class='table table-striped table-bordered parameters'></table></div>")
+    dom_parameter_table = dom_container.find('div.parameters').last().find('table.parameters').last()
+    dom_parameter_table.append("<thead class='thead-dark'><tr><th>Name</th><th>Type</th><th>Optional</th><th>Description</th></tr></thead>")
     dom_parameter_table.append("<tbody></tbody>")
     dom_parameter_tbody = dom_parameter_table.find('tbody')
     if 'parameters' in i:
