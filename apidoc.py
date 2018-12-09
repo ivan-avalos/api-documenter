@@ -16,6 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import json, sys
 from htmldom import htmldom
+from slugify import slugify
 
 usage="""usage: {0} [--help | --about | --example] input output [css]
 
@@ -134,17 +135,28 @@ else:
 
 dom_body.append("<div class='container'>")
 dom_container = dom_body.find("div.container")
+
 # API Title
-dom_container.append("<h1 style='' class='mt-3'>"+json_apidoc['title']+"</h1>")
+dom_container.append("<h1 class='mt-3'>"+json_apidoc['title']+"</h1>")
 # API Description
 dom_container.append("<div class='card mb-3'><div class='card-body'>"+json_apidoc['description']+"</div></div>")
 
+# Request Index
+dom_container.append("<div class='card mb-3 index'><div class='card-body'><h1>Index</h1></div>")
+dom_index = dom_container.find("div.index").first()
+dom_index_body = dom_index.find("div").first()
+dom_index_body.append("<ol></ol>")
+dom_index_list = dom_index_body.find("ol").first()
+
 # API Requests
 for i in json_apidoc['requests']:
-    dom_container.append("<div class='card mb-3'></div>")
+    # Index
+    dom_index_list.append("<li><a href='#"+slugify(i['title'])+"'>"+i['title']+"</a></li>")
+    
+    dom_container.append("<div class='card mb-3 mt-3' id='"+slugify(i['title'])+"'></div>")
     dom_request_card = dom_container.find('div.card').last()
     # Request Title
-    if 'title' in i: dom_request_card.append("<h5 class='card-header'>"+i['title']+"</h5>")
+    if 'title' in i: dom_request_card.append("<h1 class='display-4 card-header'>"+i['title']+"</h1>")
     else: raise Exception('Missing request title')
     
     dom_request_card.append("<div class='card-body'></div>")

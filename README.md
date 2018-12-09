@@ -1,18 +1,21 @@
 # api-documenter - easiest way of document your APIs
 
-api-documenter is a simple Python script that allows you to generate beautiful
-HTML documentation from a JSON file with a single command.
+api-documenter is a simple Python script that allows you to generate beautiful HTML documentation from a JSON file with a single command.
 
 ## Requirements
-- Python 3.*
+- **Python** >= 3
+- **python-slugify** >= 1.2.6
 
 ## Credits
-- htmldom Python library - Bhimsen.S.Kulkarni (BSD License)
-  <https://pypi.org/project/htmldom/>
+| Library | Autor | License | Website |
+|---------|--------|--------|---------|
+|htmldom|Bhimsen.S.Kulkarni|BSD|<https://pypi.org/project/htmldom/>|
+|slugify|Val Neekman|MIT|<https://github.com/un33k/python-slugify>|
 
 ## Installation
 
 ```bash
+pip3 install python-slugify
 chmod +x install.sh
 ./install.sh
 apidoc --help
