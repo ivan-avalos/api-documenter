@@ -188,7 +188,11 @@ for i in json_apidoc['requests']:
             if 'type' in j: dom_parameter_tr.append("<td>"+j['type']+"</td>")
             else: raise Exception('Missing parameter type')
             # Parameter Optional
-            if 'optional' in j: dom_parameter_tr.append("<td>"+str(j['optional'])+"</td>")
+            if 'optional' in j:
+                if j['optional']:
+                    dom_parameter_tr.append("<td>Yes</td>")
+                else:
+                    dom_parameter_tr.append("<td></td>")
             else: raise Exception('Missing parameter optional')
             # Parameter Description
             if 'description' in j: dom_parameter_tr.append("<td>"+j['description']+"</td>")
