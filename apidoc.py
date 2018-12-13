@@ -109,6 +109,14 @@ input_file=open(sys.argv[1], 'r')
 output_file=open(sys.argv[2], 'w')
 
 code_style="""
+    pre {
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    }
+    
     /* desert scheme ported from vim to google prettify */
     pre.prettyprint { display: block; background-color: #333 }
     pre .nocode { background-color: none; color: #000 }
@@ -273,7 +281,7 @@ for i in json_apidoc['requests']:
             # Example Body
             if 'body' in j:
                 if type(j['body']) is str:
-                    dom_example_table.append("<tr><td><code><pre class='prettyprint'>\b\n"+j['body']+"</pre></code></td></tr>")
+                    dom_example_table.append("<tr><td><div class='container-fluid'><code><pre class='prettyprint'>\b\n"+j['body']+"</pre></code></div></td></tr>")
                 elif type(j['body']) is list:
                     body = '\b\n'
                     for i in j['body']:
