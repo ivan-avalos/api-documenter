@@ -182,7 +182,7 @@ dom_body.append("<div class='container'>")
 dom_container = dom_body.find("div.container")
 
 # API Title
-dom_container.append("<h1 class='mt-3'>"+json_apidoc['title']+"</h1>")
+dom_container.append("<h1 class='display-3 mt-3'>"+json_apidoc['title']+"</h1>")
 # API Description
 dom_container.append("<div class='card mb-3'><div class='card-body'><p class='card-text lead'>"+json_apidoc['description']+"</p></div></div>")
 
@@ -281,7 +281,7 @@ for i in json_apidoc['requests']:
             # Example Body
             if 'body' in j:
                 if type(j['body']) is str:
-                    dom_example_table.append("<tr><td><div class='container-fluid'><code><pre class='prettyprint'>\b\n"+j['body']+"</pre></code></div></td></tr>")
+                    dom_example_table.append("<tr><td><code><pre class='prettyprint'>\b\n"+j['body']+"</pre></code></td></tr>")
                 elif type(j['body']) is list:
                     body = '\b\n'
                     for i in j['body']:
