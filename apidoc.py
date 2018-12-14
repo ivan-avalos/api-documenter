@@ -195,6 +195,7 @@ dom_index_list = dom_index_body.find("ol").first()
 
 # API Requests
 for i in json_apidoc['requests']:
+    
     # Index
     dom_index_list.append("<li><a href='#"+slugify(i['title'])+"'>"+i['title']+"</a></li>")
     
@@ -214,6 +215,7 @@ for i in json_apidoc['requests']:
     if 'method' in i:
         dom_request_card_body.append("<h5>URL:</h5> <p><code><b>"+i['method']+"</b> "+api_host+i['url']+"</code></p>")
     else: raise Exception('Missing request method')
+    request_url = i['url']
 
     # Request Parameters
     dom_request_card_body.append("<h5>Parameters</h5>")
@@ -258,9 +260,9 @@ for i in json_apidoc['requests']:
                 if j['type'] == 'request':
                     # Example Method and Protocol for Request
                     if 'method' in j and 'protocol' in j:
-                        dom_example_table.append("<tr><td>"+j['method']+" <b>"+i['url']+"</b> "+j['protocol']+"</td></tr>")
+                        dom_example_table.append("<tr><td>"+j['method']+" <b>"+request_url+"</b> "+j['protocol']+"</td></tr>")
                     elif 'method' in j:
-                        dom_example_table.append("<tr><td>"+j['method']+" <b>"+i['url']+"</b></td></tr>")
+                        dom_example_table.append("<tr><td>"+j['method']+" <b>"+request_url+"</b></td></tr>")
                     else: raise Exception('Missing example method')
                 elif j['type'] == 'response':
                     # Example Method, Protocol and Status for Response
