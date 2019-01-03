@@ -109,6 +109,12 @@ input_file=open(sys.argv[1], 'r')
 output_file=open(sys.argv[2], 'w')
 
 code_style="""
+    .card {
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
+    -moz-box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
+    box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
+    }
+
     pre {
     white-space: pre-wrap;       /* Since CSS 2.1 */
     white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
@@ -184,10 +190,10 @@ dom_container = dom_body.find("div.container")
 # API Title
 dom_container.append("<h1 class='display-3 mt-3'>"+json_apidoc['title']+"</h1>")
 # API Description
-dom_container.append("<div class='card mb-3'><div class='card-body'><p class='card-text lead'>"+json_apidoc['description']+"</p></div></div>")
+dom_container.append("<div class='card border-0 mb-3'><div class='card-body'><p class='card-text lead'>"+json_apidoc['description']+"</p></div></div>")
 
 # Request Index
-dom_container.append("<div class='card mb-3 index'><div class='card-body'><h1>Index</h1></div>")
+dom_container.append("<div class='card border-0 mb-3 index'><div class='card-body'><h1>Index</h1></div>")
 dom_index = dom_container.find("div.index").first()
 dom_index_body = dom_index.find("div").first()
 dom_index_body.append("<ol></ol>")
@@ -199,10 +205,10 @@ for i in json_apidoc['requests']:
     # Index
     dom_index_list.append("<li><a href='#"+slugify(i['title'])+"'>"+i['title']+"</a></li>")
     
-    dom_container.append("<div class='card mb-3 mt-3' id='"+slugify(i['title'])+"'></div>")
+    dom_container.append("<div class='card border-0 mb-3 mt-3' id='"+slugify(i['title'])+"'></div>")
     dom_request_card = dom_container.find('div.card').last()
     # Request Title
-    if 'title' in i: dom_request_card.append("<h1 class='display-4 card-header'>"+i['title']+"</h1>")
+    if 'title' in i: dom_request_card.append("<h1 class='display-5 card-header'>"+i['title']+"</h1>")
     else: raise Exception('Missing request title')
     
     dom_request_card.append("<div class='card-body'></div>")
