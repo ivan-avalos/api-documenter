@@ -1,5 +1,9 @@
 <html>
     <head>
+        <meta charset="utf-8">
+        </meta>
+        <link href="https://raw.githubusercontent.com/google/code-prettify/master/styles/desert.css">
+        </link>
         <title>
             Phone directory CRUD API
         </title>
@@ -7,21 +11,107 @@
         </link>
     </head>
     <body style="background: #f5f8fa">
+        <style>
+            .card {
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
+    -moz-box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
+    box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
+    }
+
+    pre {
+    white-space: pre-wrap;       /* Since CSS 2.1 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    }
+    
+    /* desert scheme ported from vim to google prettify */
+    pre.prettyprint { display: block; background-color: #333 }
+    pre .nocode { background-color: none; color: #000 }
+    pre .str { color: #ffa0a0 } /* string  - pink */
+    pre .kwd { color: #f0e68c; font-weight: bold }
+    pre .com { color: #87ceeb } /* comment - skyblue */
+    pre .typ { color: #98fb98 } /* type    - lightgreen */
+    pre .lit { color: #cd5c5c } /* literal - darkred */
+    pre .pun { color: #fff }    /* punctuation */
+    pre .pln { color: #fff }    /* plaintext */
+    pre .tag { color: #f0e68c; font-weight: bold } /* html/xml tag    - lightyellow */
+    pre .atn { color: #bdb76b; font-weight: bold } /* attribute name  - khaki */
+    pre .atv { color: #ffa0a0 } /* attribute value - pink */
+    pre .dec { color: #98fb98 } /* decimal         - lightgreen */
+    
+    /* Specify class=linenums on a pre to get line numbering */
+    ol.linenums { margin-top: 0; margin-bottom: 0; color: #AEAEAE } /* IE indents via margin-left */
+    li.L0,li.L1,li.L2,li.L3,li.L5,li.L6,li.L7,li.L8 { list-style-type: none }
+    /* Alternate shading for lines */
+    li.L1,li.L3,li.L5,li.L7,li.L9 { }
+    
+    @media print {
+    pre.prettyprint { background-color: none }
+    pre .str, code .str { color: #060 }
+    pre .kwd, code .kwd { color: #006; font-weight: bold }
+    pre .com, code .com { color: #600; font-style: italic }
+    pre .typ, code .typ { color: #404; font-weight: bold }
+    pre .lit, code .lit { color: #044 }
+    pre .pun, code .pun { color: #440 }
+    pre .pln, code .pln { color: #000 }
+    pre .tag, code .tag { color: #006; font-weight: bold }
+    pre .atn, code .atn { color: #404 }
+    pre .atv, code .atv { color: #060 }
+    }
+        </style>
         <div class="container">
-            <h1 class="mt-3">
+            <h1 class="display-3 mt-3">
                 Phone directory CRUD API
             </h1>
-            <div class="card mb-3">
+            <div class="card border-0 mb-3">
                 <div class="card-body">
-                    This is an example CRUD for a phone directory API, it includes the most basic database operations via JSON.
+                    <p class="card-text lead">
+                        This is an example CRUD for a phone directory API, it includes the most basic database operations via JSON.
+                    </p>
                 </div>
             </div>
-            <div class="card mb-3">
-                <h5 class="card-header">
-                    Create a phone number
-                </h5>
+            <div class="card border-0 mb-3 index">
                 <div class="card-body">
-                    <p>
+                    <h1>
+                        Index
+                    </h1>
+                    <ol>
+                        <li>
+                            <a href="#create-a-phone-number">
+                                Create a phone number
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#get-all-phone-numbers">
+                                Get all phone numbers
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#get-specific-phone-number">
+                                Get specific phone number
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#update-phone-number">
+                                Update phone number
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#delete-phone-number">
+                                Delete phone number
+                            </a>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="card border-0 mb-3 mt-3" id="create-a-phone-number">
+                <h1 class="display-5 card-header">
+                    Create a phone number
+                </h1>
+                <div class="card-body">
+                    <p class="card-text lead">
                         Insert a phone number into phone database.
                     </p>
                     <h5>
@@ -38,54 +128,56 @@
                     <h5>
                         Parameters
                     </h5>
-                    <table class="table table-bordered parameter">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                    Type
-                                </th>
-                                <th>
-                                    Optional
-                                </th>
-                                <th>
-                                    Description
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    name
-                                </td>
-                                <td>
-                                    string
-                                </td>
-                                <td>
-                                    True
-                                </td>
-                                <td>
-                                    Name of the owner of the phone number
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    phone
-                                </td>
-                                <td>
-                                    string
-                                </td>
-                                <td>
-                                    True
-                                </td>
-                                <td>
-                                    Phone number of the owner
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive-sm parameters">
+                        <table class="table table-striped table-bordered parameters">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Type
+                                    </th>
+                                    <th>
+                                        Optional
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        name
+                                    </td>
+                                    <td>
+                                        string
+                                    </td>
+                                    <td>
+                                        Yes
+                                    </td>
+                                    <td>
+                                        Name of the owner of the phone number
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        phone
+                                    </td>
+                                    <td>
+                                        string
+                                    </td>
+                                    <td>
+                                        Yes
+                                    </td>
+                                    <td>
+                                        Phone number of the owner
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <h5>
                         Examples:
                     </h5>
@@ -114,9 +206,12 @@
                         </tr>
                         <tr>
                             <td>
-                                <code style="display:block; white-space: pre-line;">
-                                    name=Juan Trump&amp;
+                                <code>
+                                    <pre class="prettyprint">
+                                        
+name=Juan Trump&amp;
 phone=+52 461 111 11 11
+                                    </pre>
                                 </code>
                             </td>
                         </tr>
@@ -142,20 +237,23 @@ phone=+52 461 111 11 11
                         </tr>
                         <tr>
                             <td>
-                                <code style="display:block; white-space: pre-line;">
-                                    {'error':false}
+                                <code>
+                                    <pre class="prettyprint">
+                                        
+{'error':false}
+                                    </pre>
                                 </code>
                             </td>
                         </tr>
                     </table>
                 </div>
             </div>
-            <div class="card mb-3">
-                <h5 class="card-header">
+            <div class="card border-0 mb-3 mt-3" id="get-all-phone-numbers">
+                <h1 class="display-5 card-header">
                     Get all phone numbers
-                </h5>
+                </h1>
                 <div class="card-body">
-                    <p>
+                    <p class="card-text lead">
                         Retrieve all phone numbers from phone directory database.
                     </p>
                     <h5>
@@ -172,26 +270,28 @@ phone=+52 461 111 11 11
                     <h5>
                         Parameters
                     </h5>
-                    <table class="table table-bordered parameter">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                    Type
-                                </th>
-                                <th>
-                                    Optional
-                                </th>
-                                <th>
-                                    Description
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive-sm parameters">
+                        <table class="table table-striped table-bordered parameters">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Type
+                                    </th>
+                                    <th>
+                                        Optional
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
                     <h5>
                         Examples:
                     </h5>
@@ -216,21 +316,24 @@ phone=+52 461 111 11 11
                         </tr>
                         <tr>
                             <td>
-                                <code style="display:block; white-space: pre-line;">
-                                    [{'id':1, 'name':'Juan Trump', 'phone':'+52 461 111 11 11'},
+                                <code>
+                                    <pre class="prettyprint">
+                                        
+[{'id':1, 'name':'Juan Trump', 'phone':'+52 461 111 11 11'},
 {'id':2, 'name':'Juana Clinton', 'phone':'+52 461 111 22 33'}]
+                                    </pre>
                                 </code>
                             </td>
                         </tr>
                     </table>
                 </div>
             </div>
-            <div class="card mb-3">
-                <h5 class="card-header">
+            <div class="card border-0 mb-3 mt-3" id="get-specific-phone-number">
+                <h1 class="display-5 card-header">
                     Get specific phone number
-                </h5>
+                </h1>
                 <div class="card-body">
-                    <p>
+                    <p class="card-text lead">
                         Retrieve a single phone number
                     </p>
                     <h5>
@@ -247,40 +350,41 @@ phone=+52 461 111 11 11
                     <h5>
                         Parameters
                     </h5>
-                    <table class="table table-bordered parameter">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                    Type
-                                </th>
-                                <th>
-                                    Optional
-                                </th>
-                                <th>
-                                    Description
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    id
-                                </td>
-                                <td>
-                                    int
-                                </td>
-                                <td>
-                                    False
-                                </td>
-                                <td>
-                                    ID of the existing phone number
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive-sm parameters">
+                        <table class="table table-striped table-bordered parameters">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Type
+                                    </th>
+                                    <th>
+                                        Optional
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        id
+                                    </td>
+                                    <td>
+                                        int
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        ID of the existing phone number
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <h5>
                         Examples:
                     </h5>
@@ -305,20 +409,23 @@ phone=+52 461 111 11 11
                         </tr>
                         <tr>
                             <td>
-                                <code style="display:block; white-space: pre-line;">
-                                    {'id':1, 'name':'Juan Trump', 'phone':'+52 461 111 11 11'}
+                                <code>
+                                    <pre class="prettyprint">
+                                        
+{'id':1, 'name':'Juan Trump', 'phone':'+52 461 111 11 11'}
+                                    </pre>
                                 </code>
                             </td>
                         </tr>
                     </table>
                 </div>
             </div>
-            <div class="card mb-3">
-                <h5 class="card-header">
+            <div class="card border-0 mb-3 mt-3" id="update-phone-number">
+                <h1 class="display-5 card-header">
                     Update phone number
-                </h5>
+                </h1>
                 <div class="card-body">
-                    <p>
+                    <p class="card-text lead">
                         Edit existing phone number.
                     </p>
                     <h5>
@@ -335,68 +442,68 @@ phone=+52 461 111 11 11
                     <h5>
                         Parameters
                     </h5>
-                    <table class="table table-bordered parameter">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                    Type
-                                </th>
-                                <th>
-                                    Optional
-                                </th>
-                                <th>
-                                    Description
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    id
-                                </td>
-                                <td>
-                                    int
-                                </td>
-                                <td>
-                                    True
-                                </td>
-                                <td>
-                                    ID of the existing phone number
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    name
-                                </td>
-                                <td>
-                                    string
-                                </td>
-                                <td>
-                                    False
-                                </td>
-                                <td>
-                                    Name of the owner of the phone number
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    phone
-                                </td>
-                                <td>
-                                    string
-                                </td>
-                                <td>
-                                    False
-                                </td>
-                                <td>
-                                    Phone number of the owner
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive-sm parameters">
+                        <table class="table table-striped table-bordered parameters">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Type
+                                    </th>
+                                    <th>
+                                        Optional
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        id
+                                    </td>
+                                    <td>
+                                        int
+                                    </td>
+                                    <td>
+                                        Yes
+                                    </td>
+                                    <td>
+                                        ID of the existing phone number
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        name
+                                    </td>
+                                    <td>
+                                        string
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        Name of the owner of the phone number
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        phone
+                                    </td>
+                                    <td>
+                                        string
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        Phone number of the owner
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <h5>
                         Examples:
                     </h5>
@@ -420,10 +527,13 @@ phone=+52 461 111 11 11
                         </tr>
                         <tr>
                             <td>
-                                <code style="display:block; white-space: pre-line;">
-                                    id=1&amp;
+                                <code>
+                                    <pre class="prettyprint">
+                                        
+id=1&amp;
 name=Juanito Trump&amp;
 phone=+52 461 000 00 00
+                                    </pre>
                                 </code>
                             </td>
                         </tr>
@@ -449,20 +559,23 @@ phone=+52 461 000 00 00
                         </tr>
                         <tr>
                             <td>
-                                <code style="display:block; white-space: pre-line;">
-                                    {'error':false}
+                                <code>
+                                    <pre class="prettyprint">
+                                        
+{'error':false}
+                                    </pre>
                                 </code>
                             </td>
                         </tr>
                     </table>
                 </div>
             </div>
-            <div class="card mb-3">
-                <h5 class="card-header">
+            <div class="card border-0 mb-3 mt-3" id="delete-phone-number">
+                <h1 class="display-5 card-header">
                     Delete phone number
-                </h5>
+                </h1>
                 <div class="card-body">
-                    <p>
+                    <p class="card-text lead">
                         Remove existing phone number permanently.
                     </p>
                     <h5>
@@ -479,40 +592,41 @@ phone=+52 461 000 00 00
                     <h5>
                         Parameters
                     </h5>
-                    <table class="table table-bordered parameter">
-                        <thead>
-                            <tr>
-                                <th>
-                                    Name
-                                </th>
-                                <th>
-                                    Type
-                                </th>
-                                <th>
-                                    Optional
-                                </th>
-                                <th>
-                                    Description
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    id
-                                </td>
-                                <td>
-                                    int
-                                </td>
-                                <td>
-                                    False
-                                </td>
-                                <td>
-                                    ID of existing phone number
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive-sm parameters">
+                        <table class="table table-striped table-bordered parameters">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>
+                                        Name
+                                    </th>
+                                    <th>
+                                        Type
+                                    </th>
+                                    <th>
+                                        Optional
+                                    </th>
+                                    <th>
+                                        Description
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        id
+                                    </td>
+                                    <td>
+                                        int
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        ID of existing phone number
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <h5>
                         Examples:
                     </h5>
@@ -537,8 +651,11 @@ phone=+52 461 000 00 00
                         </tr>
                         <tr>
                             <td>
-                                <code style="display:block; white-space: pre-line;">
-                                    {'error':false}
+                                <code>
+                                    <pre class="prettyprint">
+                                        
+{'error':false}
+                                    </pre>
                                 </code>
                             </td>
                         </tr>
@@ -556,4 +673,6 @@ phone=+52 461 000 00 00
             </div>
         </footer>
     </body>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js">
+    </script>
 </html>
