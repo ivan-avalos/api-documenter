@@ -26,114 +26,128 @@ apidoc --help
 
 ## Description structure
 
+**Note:** all the keys should be double quoted and the values should be replaced. See the example for more information.
+
 ### API <small>(root)</small>
 ```typescript
-title: string
-description: string | string[]
-host: string
-requests: Request[]
-statusCodes: StatusCode[]
+{
+    title: string,
+    description: string | string[],
+    host: string,
+    requests: Request[],
+    statusCodes: StatusCode[]
+}
 ```
 
 ### Request
 ```typescript
-title: string
-method: string
-description: string | string[]
-url: string
-parameters: Parameter[]
-examples: Example[]
+{
+    title: string,
+    method: string,
+    description: string | string[],
+    url: string,
+    parameters: Parameter[],
+    examples: Example[]
+}
 ```
 
 ### Parameter
 ```typescript
-name: string
-type: string
-optional: boolean
-description: string
+{
+    name: string,
+    type: string,
+    optional: boolean,
+    description: string
+}
 ```
 
 ### Example (request)
 ```typescript
-description: string | string[]
-type: 'request'
-protocol: string = 'HTTP/1.1'
-headers: Header[]
-body: string | string[]
+{
+    description: string | string[],
+    type: 'request',
+    protocol: string = 'HTTP/1.1',
+    headers: Header[],
+    body: string | string[]
+}
 ```
 
 ### Example (response)
 ```typescript
-description: string
-type: 'response'
-protocol: string = 'HTTP/1.1'
-status: string
-headers: Header[]
-body: string[]
+{
+    description: string,
+    type: 'response',
+    protocol: string = 'HTTP/1.1',
+    status: string,
+    headers: Header[],
+    body: string[]
+}
 ```
 
 ### Header
 ```typescript
-key: string
-value: string
+{
+    key: string,
+    value: string
+}
 ```
 
 ### StatusCode
 ```typescript
-code: number
-reason: string
-meaning: string
+{
+    code: number,
+    reason: string,
+    meaning: string
+}
 ```
 
 ## Full structure
 ```typescript
-API:
-	title: string
-	description: string
-	host: string
-	requests: [
-		Request:
-			title: string
-    		method: string
-    		description: string | string[]
-    		url: string
-    		parameters: [
-	    		Parameter:
-	    			name: string
-	    			type: string
-	    			optional: boolean
-	    			description: string
-    		]
-    		examples: [
-    			Example(request):
-    				description: string | string[]
-    				type: 'request'
-    				protocol: string = 'HTTP/1.1'
-    				headers: [
-    					Header:
-    						key: string
-    						value: string
-    				]
-    				body: string | string[]
-    			Example(response):
-    				description: string | string[]
-    				type: 'response'
-    				protocol: string = 'HTTP/1.1'
-    				status: string
-    				headers: [
-    					Header:
-    						key: string
-    						value: string
-    				]
-    				body: string | string[]
-    		]
-  ],
-  statusCodes: [
-  	StatusCode:
-  		code: string
-  		reason: string
-  		meaning: string
-  ]
+{
+    title: string,
+    description: string,
+    host: string,
+    requests: [
+        {
+            title: string,
+            method: string,
+            description: string | string [],
+            url: string,
+            parameters: [
+                {
+                    name: string,
+                    type: string,
+                    optional: boolean,
+                    description: string
+                }
+            ],
+            examples: [
+                { // request
+                    description: string | string[],
+                    type: 'request',
+                    protocol: string = 'HTTP/1.1',
+                    headers: Header[],
+                    body: string | string[]
+                },
+                { // response
+                    description: string,
+                    type: 'response',
+                    protocol: string = 'HTTP/1.1',
+                    status: string,
+                    headers: Header[],
+                    body: string[]
+                }
+            ]
+        }
+    ],
+    statusCodes: [
+        {
+            code: string,
+            reason: string,
+            meaning: string
+        }
+    ]
+}
 ```
 
 ## License <small>(GPLv3)</small>
