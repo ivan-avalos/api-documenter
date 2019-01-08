@@ -378,6 +378,4 @@ with html_output:
         for js in external_scripts:
             script(src=js)
 
-
-print (html_output.render())
 output_file.write(html_output.render())
