@@ -1,23 +1,12 @@
 <html>
-    <head>
-        <meta charset="utf-8">
-        </meta>
-        <link href="https://raw.githubusercontent.com/google/code-prettify/master/styles/desert.css">
-        </link>
-        <title>
-            Phone directory CRUD API
-        </title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" crossorigin="anonymous">
-        </link>
-    </head>
-    <body style="background: #f5f8fa">
-        <style>
-            .card {
-    -webkit-box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
-    -moz-box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
-    box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
-    }
-
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <title>Phone directory CRUD API</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="https://raw.githubusercontent.com/google/code-prettify/master/styles/desert.css" type="text/css">
+<style>
+    /* Prettify CSS styles. */
     pre {
     white-space: pre-wrap;       /* Since CSS 2.1 */
     white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
@@ -27,7 +16,14 @@
     }
     
     /* desert scheme ported from vim to google prettify */
-    pre.prettyprint { display: block; background-color: #333 }
+    pre.prettyprint { 
+    font-family: monospace;
+    font-size: 13px;
+    display: block; 
+    background-color: #1e1e1e;
+    border: 0 !important;
+    margin-bottom: 0px;
+    }
     pre .nocode { background-color: none; color: #000 }
     pre .str { color: #ffa0a0 } /* string  - pink */
     pre .kwd { color: #f0e68c; font-weight: bold }
@@ -60,619 +56,435 @@
     pre .atn, code .atn { color: #404 }
     pre .atv, code .atv { color: #060 }
     }
-        </style>
-        <div class="container">
-            <h1 class="display-3 mt-3">
-                Phone directory CRUD API
-            </h1>
-            <div class="card border-0 mb-3">
-                <div class="card-body">
-                    <p class="card-text lead">
-                        This is an example CRUD for a phone directory API, it includes the most basic database operations via JSON.
-                    </p>
-                </div>
-            </div>
-            <div class="card border-0 mb-3 index">
-                <div class="card-body">
-                    <h1>
-                        Index
-                    </h1>
-                    <ol>
-                        <li>
-                            <a href="#create-a-phone-number">
-                                Create a phone number
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#get-all-phone-numbers">
-                                Get all phone numbers
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#get-specific-phone-number">
-                                Get specific phone number
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#update-phone-number">
-                                Update phone number
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#delete-phone-number">
-                                Delete phone number
-                            </a>
-                        </li>
-                    </ol>
-                </div>
-            </div>
-            <div class="card border-0 mb-3 mt-3" id="create-a-phone-number">
-                <h1 class="display-5 card-header">
-                    Create a phone number
-                </h1>
-                <div class="card-body">
-                    <p class="card-text lead">
-                        Insert a phone number into phone database.
-                    </p>
-                    <h5>
-                        URL:
-                    </h5>
-                    <p>
-                        <code>
-                            <b>
-                                POST
-                            </b>
-                            http://crud.host/api/request
-                        </code>
-                    </p>
-                    <h5>
-                        Parameters
-                    </h5>
-                    <div class="table-responsive-sm parameters">
-                        <table class="table table-striped table-bordered parameters">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>
-                                        Name
-                                    </th>
-                                    <th>
-                                        Type
-                                    </th>
-                                    <th>
-                                        Optional
-                                    </th>
-                                    <th>
-                                        Description
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        name
-                                    </td>
-                                    <td>
-                                        string
-                                    </td>
-                                    <td>
-                                        Yes
-                                    </td>
-                                    <td>
-                                        Name of the owner of the phone number
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        phone
-                                    </td>
-                                    <td>
-                                        string
-                                    </td>
-                                    <td>
-                                        Yes
-                                    </td>
-                                    <td>
-                                        Phone number of the owner
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <h5>
-                        Examples:
-                    </h5>
-                    <p>
-                        Example of request
-                    </p>
-                    <table style="font-family: monospace" class="table table-sm table-borderless table-dark example">
-                        <tr>
-                            <td>
-                                POST
-                                <b>
-                                    /api/request
-                                </b>
-                                HTTP/1.1
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Content-Type: application/x-www-form-urlencoded
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Accept: application/json
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <code>
-                                    <pre class="prettyprint">
-                                        
-name=Juan Trump&amp;
-phone=+52 461 111 11 11
-                                    </pre>
-                                </code>
-                            </td>
-                        </tr>
-                    </table>
-                    <p>
-                        Example of response
-                    </p>
-                    <table style="font-family: monospace" class="table table-sm table-borderless table-dark example">
-                        <tr>
-                            <td>
-                                HTTP/1.1 200 OK
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Content-Type: application/json
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Status: 200 OK
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <code>
-                                    <pre class="prettyprint">
-                                        
-{'error':false}
-                                    </pre>
-                                </code>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="card border-0 mb-3 mt-3" id="get-all-phone-numbers">
-                <h1 class="display-5 card-header">
-                    Get all phone numbers
-                </h1>
-                <div class="card-body">
-                    <p class="card-text lead">
-                        Retrieve all phone numbers from phone directory database.
-                    </p>
-                    <h5>
-                        URL:
-                    </h5>
-                    <p>
-                        <code>
-                            <b>
-                                GET
-                            </b>
-                            http://crud.host/api/retrieve
-                        </code>
-                    </p>
-                    <h5>
-                        Parameters
-                    </h5>
-                    <div class="table-responsive-sm parameters">
-                        <table class="table table-striped table-bordered parameters">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>
-                                        Name
-                                    </th>
-                                    <th>
-                                        Type
-                                    </th>
-                                    <th>
-                                        Optional
-                                    </th>
-                                    <th>
-                                        Description
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                    <h5>
-                        Examples:
-                    </h5>
-                    <p>
-                        Example of response
-                    </p>
-                    <table style="font-family: monospace" class="table table-sm table-borderless table-dark example">
-                        <tr>
-                            <td>
-                                HTTP/1.1 200 OK
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Content-Type: application/json
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Status: 200 OK
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <code>
-                                    <pre class="prettyprint">
-                                        
-[{'id':1, 'name':'Juan Trump', 'phone':'+52 461 111 11 11'},
-{'id':2, 'name':'Juana Clinton', 'phone':'+52 461 111 22 33'}]
-                                    </pre>
-                                </code>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="card border-0 mb-3 mt-3" id="get-specific-phone-number">
-                <h1 class="display-5 card-header">
-                    Get specific phone number
-                </h1>
-                <div class="card-body">
-                    <p class="card-text lead">
-                        Retrieve a single phone number
-                    </p>
-                    <h5>
-                        URL:
-                    </h5>
-                    <p>
-                        <code>
-                            <b>
-                                GET
-                            </b>
-                            http://crud.host/api/retrieve
-                        </code>
-                    </p>
-                    <h5>
-                        Parameters
-                    </h5>
-                    <div class="table-responsive-sm parameters">
-                        <table class="table table-striped table-bordered parameters">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>
-                                        Name
-                                    </th>
-                                    <th>
-                                        Type
-                                    </th>
-                                    <th>
-                                        Optional
-                                    </th>
-                                    <th>
-                                        Description
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        id
-                                    </td>
-                                    <td>
-                                        int
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                        ID of the existing phone number
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <h5>
-                        Examples:
-                    </h5>
-                    <p>
-                        Example response
-                    </p>
-                    <table style="font-family: monospace" class="table table-sm table-borderless table-dark example">
-                        <tr>
-                            <td>
-                                HTTP/1.1 200 OK
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Content-Type: application/json
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Status: 200 OK
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <code>
-                                    <pre class="prettyprint">
-                                        
-{'id':1, 'name':'Juan Trump', 'phone':'+52 461 111 11 11'}
-                                    </pre>
-                                </code>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="card border-0 mb-3 mt-3" id="update-phone-number">
-                <h1 class="display-5 card-header">
-                    Update phone number
-                </h1>
-                <div class="card-body">
-                    <p class="card-text lead">
-                        Edit existing phone number.
-                    </p>
-                    <h5>
-                        URL:
-                    </h5>
-                    <p>
-                        <code>
-                            <b>
-                                POST
-                            </b>
-                            http://crud.host/api/update
-                        </code>
-                    </p>
-                    <h5>
-                        Parameters
-                    </h5>
-                    <div class="table-responsive-sm parameters">
-                        <table class="table table-striped table-bordered parameters">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>
-                                        Name
-                                    </th>
-                                    <th>
-                                        Type
-                                    </th>
-                                    <th>
-                                        Optional
-                                    </th>
-                                    <th>
-                                        Description
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        id
-                                    </td>
-                                    <td>
-                                        int
-                                    </td>
-                                    <td>
-                                        Yes
-                                    </td>
-                                    <td>
-                                        ID of the existing phone number
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        name
-                                    </td>
-                                    <td>
-                                        string
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                        Name of the owner of the phone number
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        phone
-                                    </td>
-                                    <td>
-                                        string
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                        Phone number of the owner
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <h5>
-                        Examples:
-                    </h5>
-                    <p>
-                        Example request
-                    </p>
-                    <table style="font-family: monospace" class="table table-sm table-borderless table-dark example">
-                        <tr>
-                            <td>
-                                POST
-                                <b>
-                                    /api/update
-                                </b>
-                                HTTP/1.1
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Content-Type: application/x-www-form-urlencoded
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <code>
-                                    <pre class="prettyprint">
-                                        
-id=1&amp;
-name=Juanito Trump&amp;
-phone=+52 461 000 00 00
-                                    </pre>
-                                </code>
-                            </td>
-                        </tr>
-                    </table>
-                    <p>
-                        Example response
-                    </p>
-                    <table style="font-family: monospace" class="table table-sm table-borderless table-dark example">
-                        <tr>
-                            <td>
-                                HTTP/1.1 200 OK
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Content-Type: application/json
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Status: 200 OK
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <code>
-                                    <pre class="prettyprint">
-                                        
-{'error':false}
-                                    </pre>
-                                </code>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-            <div class="card border-0 mb-3 mt-3" id="delete-phone-number">
-                <h1 class="display-5 card-header">
-                    Delete phone number
-                </h1>
-                <div class="card-body">
-                    <p class="card-text lead">
-                        Remove existing phone number permanently.
-                    </p>
-                    <h5>
-                        URL:
-                    </h5>
-                    <p>
-                        <code>
-                            <b>
-                                GET
-                            </b>
-                            http://crud.host/api/delete
-                        </code>
-                    </p>
-                    <h5>
-                        Parameters
-                    </h5>
-                    <div class="table-responsive-sm parameters">
-                        <table class="table table-striped table-bordered parameters">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>
-                                        Name
-                                    </th>
-                                    <th>
-                                        Type
-                                    </th>
-                                    <th>
-                                        Optional
-                                    </th>
-                                    <th>
-                                        Description
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        id
-                                    </td>
-                                    <td>
-                                        int
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                        ID of existing phone number
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <h5>
-                        Examples:
-                    </h5>
-                    <p>
-                        Example response
-                    </p>
-                    <table style="font-family: monospace" class="table table-sm table-borderless table-dark example">
-                        <tr>
-                            <td>
-                                HTTP/1.1 200 OK
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Content-Type: application/json
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Status: 200 OK
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <code>
-                                    <pre class="prettyprint">
-                                        
-{'error':false}
-                                    </pre>
-                                </code>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+
+    /* Other CSS styles. */
+    .example {
+        font-family: monospace;
+    }
+
+    body {
+    background: #252526;
+    color: white;
+    }
+    .card {
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,1);
+    -moz-box-shadow: 0px 2px 4px 0px rgba(0,0,0,1);
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,1);
+    }
+</style>
+
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="display-4 mt-3">Phone directory CRUD API</h1>
+      <div class="card border-0 mb-3 bg-dark">
+        <div class="card-body">
+          <p class="card-text lead">This is an example CRUD for a phone directory JSON API REST, it includes some of the most basic database operations like creating, reading, updating and deleting (CRUD).</p>
+          <h1>Status codes</h1>
+          <table class="table table-dark table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Status code</th>
+                <th>Reason</th>
+                <th>Meaning</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>200</td>
+                <td>OK</td>
+                <td>Your request was successful.</td>
+              </tr>
+              <tr>
+                <td>400</td>
+                <td>Bad Request</td>
+                <td>Your request is invalid.</td>
+              </tr>
+              <tr>
+                <td>401</td>
+                <td>Unauthorized</td>
+                <td>The access token is wrong or missing.</td>
+              </tr>
+              <tr>
+                <td>404</td>
+                <td>Not Found</td>
+                <td>The phone number could not be found.</td>
+              </tr>
+              <tr>
+                <td>405</td>
+                <td>Method Not Allowed</td>
+                <td>You tried to access to a route with an invalid method.</td>
+              </tr>
+              <tr>
+                <td>500</td>
+                <td>Internal Server Error</td>
+                <td>We had a problem with our server. Try again later.</td>
+              </tr>
+            </tbody>
+          </table>
+          <h1>Index</h1>
+          <ol>
+            <li><a class="text-white" href="#0">Create a phone number</a></li>
+            <li><a class="text-white" href="#1">Get all phone numbers</a></li>
+            <li><a class="text-white" href="#2">Get specific phone number</a></li>
+            <li><a class="text-white" href="#3">Update phone number</a></li>
+            <li><a class="text-white" href="#4">Delete phone number</a></li>
+          </ol>
         </div>
-        <footer>
-            <div class="container py-5">
-                <p class="mb-0 text-uppercase font-weight-bold small text-justify">
-                    <a href="https://github.com/ivan-avalos/api-documenter" class="text-muted float-right" rel="noopener">
-                        Documentation generated with api-documenter
-                    </a>
-                </p>
-            </div>
-        </footer>
-    </body>
-    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js">
-    </script>
+      </div>
+      <div class="card border-0 mb-3 bg-dark" id="0">
+        <div class="card-header">
+          <h1 class="display-5">Create a phone number</h1>
+        </div>
+        <div class="card-body">
+          <p class="card-text lead">Insert a phone number into database.</p>
+          <h3>URL</h3>
+          <p>
+            <code>
+              <b>POST</b>
+              <span>/api/phone</span>
+            </code>
+          </p>
+          <h3>Parameters</h3>
+          <div class="table-responsive-sm">
+            <table class="table table-dark table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Optional</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>name</td>
+                  <td>string</td>
+                  <td>Yes</td>
+                  <td>Name of the phone number owner.</td>
+                </tr>
+                <tr>
+                  <td>phone</td>
+                  <td>string</td>
+                  <td>Yes</td>
+                  <td>Phone number of the owner.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>Examples</h3>
+          <span class="card-text lead">Request</span>
+          <table class="table table-sm table-borderless table-dark example">
+            <tr>
+              <td>
+                <span>HTTP/1.1</span>
+                <b>POST</b>
+                <b>/api/phone</b>
+              </td>
+            </tr>
+            <tr>
+              <td>Authorization: Bearer [access token]</td>
+            </tr>
+            <tr>
+              <td>Content-Type: application/json</td>
+            </tr>
+            <tr>
+              <td>Accept: application/json</td>
+            </tr>
+            <tr>
+              <td>
+                <pre class="prettyprint">{
+    &quot;name&quot;:&quot;Andrés Trump&quot;,
+    &quot;phone&quot;:&quot;+52 461 111 1111&quot;,
+}</pre>
+              </td>
+            </tr>
+          </table>
+          <span class="card-text lead">Response</span>
+          <table class="table table-sm table-borderless table-dark example">
+            <tr>
+              <td>
+                <span>HTTP/1.1</span>
+                <span>200 OK</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Content-Type: application/json</td>
+            </tr>
+            <tr>
+              <td>
+                <pre class="prettyprint">{
+    &quot;success&quot;: true
+}</pre>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="card border-0 mb-3 bg-dark" id="1">
+        <div class="card-header">
+          <h1 class="display-5">Get all phone numbers</h1>
+        </div>
+        <div class="card-body">
+          <p class="card-text lead">Retrieve all the phone numbers in the database.</p>
+          <h3>URL</h3>
+          <p>
+            <code>
+              <b>GET</b>
+              <span>/api/phone</span>
+            </code>
+          </p>
+          <h3>Examples</h3>
+          <span class="card-text lead">Response</span>
+          <p>Example of response</p>
+          <table class="table table-sm table-borderless table-dark example">
+            <tr>
+              <td>
+                <span>HTTP/1.1</span>
+                <span>200 OK</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Content-Type: application/json</td>
+            </tr>
+            <tr>
+              <td>
+                <pre class="prettyprint">[
+    {
+        &quot;id&quot;: 1,
+        &quot;name&quot;: &quot;Andrés Trump&quot;,
+        &quot;phone&quot;: &quot;+52 461 111 1111&quot;
+    },
+    {
+        &quot;id&quot;: 2,
+        &quot;name&quot;: &quot;Margarita Clinton&quot;,
+        &quot;phone&quot;: &quot;+52 461 111 2233&quot;
+    },
+    {
+        &quot;id&quot;: 3,
+        &quot;name&quot;: &quot;Donald John López Obrador&quot;
+        &quot;phone&quot;: &quot;+1 628 222 3344&quot;
+    }
+]</pre>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="card border-0 mb-3 bg-dark" id="2">
+        <div class="card-header">
+          <h1 class="display-5">Get specific phone number</h1>
+        </div>
+        <div class="card-body">
+          <p class="card-text lead">Retrieve a single phone number from the database.</p>
+          <h3>URL</h3>
+          <p>
+            <code>
+              <b>GET</b>
+              <span>/api/phone/{id}</span>
+            </code>
+          </p>
+          <h3>Parameters</h3>
+          <div class="table-responsive-sm">
+            <table class="table table-dark table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Optional</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>id</td>
+                  <td>int</td>
+                  <td></td>
+                  <td>ID of the existing phone number</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>Examples</h3>
+          <span class="card-text lead">Response</span>
+          <p>Example response</p>
+          <table class="table table-sm table-borderless table-dark example">
+            <tr>
+              <td>
+                <span>HTTP/1.1</span>
+                <span>200 OK</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Content-Type: application/json</td>
+            </tr>
+            <tr>
+              <td>
+                <pre class="prettyprint">{
+    &quot;id&quot;: 1,
+    &quot;name&quot;: &quot;Andrés Trump&quot;,
+    &quot;phone&quot;: &quot;+52 461 111 1111&quot;
+}</pre>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="card border-0 mb-3 bg-dark" id="3">
+        <div class="card-header">
+          <h1 class="display-5">Update phone number</h1>
+        </div>
+        <div class="card-body">
+          <p class="card-text lead">Edit existing phone number in database.</p>
+          <h3>URL</h3>
+          <p>
+            <code>
+              <b>PUT</b>
+              <span>/api/phone/{id}</span>
+            </code>
+          </p>
+          <h3>Parameters</h3>
+          <div class="table-responsive-sm">
+            <table class="table table-dark table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Optional</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>id</td>
+                  <td>int</td>
+                  <td></td>
+                  <td>ID of the existing phone number.</td>
+                </tr>
+                <tr>
+                  <td>name</td>
+                  <td>string</td>
+                  <td></td>
+                  <td>Name of the phone number owner.</td>
+                </tr>
+                <tr>
+                  <td>phone</td>
+                  <td>string</td>
+                  <td></td>
+                  <td>Phone number of the owner.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>Examples</h3>
+          <span class="card-text lead">Request</span>
+          <p>Example request</p>
+          <table class="table table-sm table-borderless table-dark example">
+            <tr>
+              <td>
+                <span>HTTP/1.1</span>
+                <b>PUT</b>
+                <b>/api/phone/{id}</b>
+              </td>
+            </tr>
+            <tr>
+              <td>Authorization: Bearer [access token]</td>
+            </tr>
+            <tr>
+              <td>Content-Type: application/json</td>
+            </tr>
+            <tr>
+              <td>Accept: application/json</td>
+            </tr>
+            <tr>
+              <td>
+                <pre class="prettyprint">{
+    &quot;name&quot;: &quot;Enrique Peña Bush&quot;,
+    &quot;phone&quot;: &quot;+1 628 000 3355&quot;,
+}</pre>
+              </td>
+            </tr>
+          </table>
+          <span class="card-text lead">Response</span>
+          <p>Example response</p>
+          <table class="table table-sm table-borderless table-dark example">
+            <tr>
+              <td>
+                <span>HTTP/1.1</span>
+                <span>200 OK</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Content-Type: application/json</td>
+            </tr>
+            <tr>
+              <td>
+                <pre class="prettyprint">{
+    &quot;success&quot;: true
+}</pre>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="card border-0 mb-3 bg-dark" id="4">
+        <div class="card-header">
+          <h1 class="display-5">Delete phone number</h1>
+        </div>
+        <div class="card-body">
+          <p class="card-text lead">Remove existing phone number from database permanently.</p>
+          <h3>URL</h3>
+          <p>
+            <code>
+              <b>DELETE</b>
+              <span>/api/phone/{id}</span>
+            </code>
+          </p>
+          <h3>Parameters</h3>
+          <div class="table-responsive-sm">
+            <table class="table table-dark table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Type</th>
+                  <th>Optional</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>id</td>
+                  <td>int</td>
+                  <td></td>
+                  <td>ID of existing phone number</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <h3>Examples</h3>
+          <span class="card-text lead">Response</span>
+          <p>Example response</p>
+          <table class="table table-sm table-borderless table-dark example">
+            <tr>
+              <td>
+                <span>HTTP/1.1</span>
+                <span>200 OK</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Content-Type: application/json</td>
+            </tr>
+            <tr>
+              <td>
+                <pre class="prettyprint">{
+    &quot;success&quot;: true
+}</pre>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+  </body>
 </html>

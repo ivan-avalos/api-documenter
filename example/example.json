@@ -1,153 +1,284 @@
 { 
     "title":"Phone directory CRUD API",
-    "description":"This is an example CRUD for a phone directory API, it includes the most basic database operations via JSON.",
+    "description":"This is an example CRUD for a phone directory JSON API REST, it includes some of the most basic database operations like creating, reading, updating and deleting (CRUD).",
     "host":"http://crud.host",
-    "requests":[
+    "statusCodes": [
+        {
+            "code": "200",
+            "reason": "OK",
+            "meaning": "Your request was successful."
+        },
+        {
+            "code": "400",
+            "reason": "Bad Request",
+            "meaning": "Your request is invalid."
+        },
+        {
+            "code": "401",
+            "reason": "Unauthorized",
+            "meaning": "The access token is wrong or missing."
+        },
+        {
+            "code": "404",
+            "reason": "Not Found",
+            "meaning": "The phone number could not be found."
+        },
+        {
+            "code": "405",
+            "reason": "Method Not Allowed",
+            "meaning": "You tried to access to a route with an invalid method."
+        },
+        {
+            "code": "500",
+            "reason": "Internal Server Error",
+            "meaning": "We had a problem with our server. Try again later."
+        }
+    ],
+    "requests": [
         {
             "title":"Create a phone number",
             "method":"POST",
-            "description":"Insert a phone number into phone database.",
-            "url":"/api/request",
+            "description": "Insert a phone number into database.",
+            "url":"/api/phone",
             "parameters":[
                 {
                     "name":"name",
                     "type":"string",
                     "optional":true,
-                    "description":"Name of the owner of the phone number"
+                    "description":"Name of the phone number owner."
                 },
                 {
                     "name":"phone",
                     "type":"string",
                     "optional":true,
-                    "description":"Phone number of the owner"
+                    "description":"Phone number of the owner."
                 }
             ],
             "examples":[
                 {
-                    "description":"Example of request",
                     "type":"request",
                     "method":"POST",
                     "protocol":"HTTP/1.1",
                     "headers":[
-			{"key":"Content-Type", "value":"application/x-www-form-urlencoded"},
-                        {"key":"Accept", "value":"application/json"}
+                        {
+                            "key": "Authorization",
+                            "value": "Bearer [access token]"
+                        },
+                        {
+                            "key": "Content-Type", 
+                            "value": "application/json"
+                        },
+                        {
+                            "key": "Accept", 
+                            "value": "application/json"
+                        }
                     ],
-
-                    "body":["name=Juan Trump&amp;", "phone=+52 461 111 11 11"]
+                    "body": [
+                        "{",
+                        "    \"name\":\"Andrés Trump\",",
+                        "    \"phone\":\"+52 461 111 1111\",",
+                        "}"
+                    ]
                 },
                 {
-                    "description":"Example of response",
                     "type":"response",
                     "protocol":"HTTP/1.1",
                     "status":"200 OK",
-                    "headers":[
-			{"key":"Content-Type", "value":"application/json"},
-			{"key":"Status", "value":"200 OK"}
+                    "headers": [
+                        {
+                            "key": "Content-Type", 
+                            "value": "application/json"
+                        }
                     ],
-                    "body":"{'error':false}"
+                    "body": [
+                        "{",
+                        "    \"success\": true",
+                        "}"
+                    ]
                 }
             ]
         },
-	{
-            "title":"Get all phone numbers",
+        {
+                "title":"Get all phone numbers",
+                "method":"GET",
+                "description":"Retrieve all the phone numbers in the database.",
+                "url":"/api/phone",
+                "parameters":[],
+                "examples":[
+                    {
+                        "description":"Example of response",
+                        "type":"response",
+                        "protocol":"HTTP/1.1",
+                        "status":"200 OK",
+                        "headers":[
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": [
+                            "[",
+                            "    {",
+                            "        \"id\": 1,",
+                            "        \"name\": \"Andrés Trump\",",
+                            "        \"phone\": \"+52 461 111 1111\"",
+                            "    },",
+                            "    {",
+                            "        \"id\": 2,",
+                            "        \"name\": \"Margarita Clinton\",",
+                            "        \"phone\": \"+52 461 111 2233\"",
+                            "    },",
+                            "    {",
+                            "        \"id\": 3,",
+                            "        \"name\": \"Donald John López Obrador\"",
+                            "        \"phone\": \"+1 628 222 3344\"",
+                            "    }",
+                            "]"
+                        ]
+                    }
+                ]
+            },
+        {
+            "title":"Get specific phone number",
             "method":"GET",
-            "description":"Retrieve all phone numbers from phone directory database.",
-            "url":"/api/retrieve",
-            "parameters":[],
+            "description":"Retrieve a single phone number from the database.",
+            "url":"/api/phone/{id}",
+            "parameters":[
+                {
+                    "name": "id", 
+                    "type": "int",
+                    "optional": false,
+                    "description": "ID of the existing phone number"
+                }
+            ],
+            "examples":[
+            {
+                "description":"Example response",
+                "type":"response",
+                "method":"GET",
+                "protocol":"HTTP/1.1",
+                "status":"200 OK",
+                "headers":[
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "body": [
+                    "{",
+                    "    \"id\": 1,",
+                    "    \"name\": \"Andrés Trump\",",
+                    "    \"phone\": \"+52 461 111 1111\"",
+                    "}"
+                ]
+                
+            }
+            ]
+        },
+        {
+                "title":"Update phone number",
+                "method":"PUT",
+                "description":"Edit existing phone number in database.",
+                "url":"/api/phone/{id}",
+                "parameters":[
+                    {
+                        "name":"id",
+                        "type":"int",
+                        "optional":false,
+                        "description":"ID of the existing phone number."
+                    },
+                    {
+                        "name":"name",
+                        "type":"string",
+                        "optional":false,
+                        "description":"Name of the phone number owner."
+                    },
+                    {
+                        "name":"phone", 
+                        "type":"string", 
+                        "optional":false, 
+                        "description":"Phone number of the owner."
+                    }
+            ],
+                "examples": [
+                    {
+                        "description":"Example request",
+                        "type":"request",
+                        "method":"POST",
+                        "protocol":"HTTP/1.1",
+                        "headers":[
+                            {
+                                "key": "Authorization",
+                                "value": "Bearer [access token]"
+                            },
+                            {
+                                "key": "Content-Type", 
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "body": [
+                            "{",
+                            "    \"name\": \"Enrique Peña Bush\",",
+                            "    \"phone\": \"+1 628 000 3355\",",
+                            "}"
+                        ]
+                    },
+                    {
+                        "description":"Example response",
+                        "type":"response",
+                        "status":"200 OK",
+                        "protocol":"HTTP/1.1",
+                        "headers":[
+                            {
+                                "key":"Content-Type",
+                                "value":"application/json"
+                            }
+                        ],
+                        "body": [
+                            "{",
+                            "    \"success\": true",
+                            "}"
+                        ]
+                    }
+                ]
+            },
+        {
+            "title":"Delete phone number",
+            "method":"DELETE",
+            "description":"Remove existing phone number from database permanently.",
+            "url":"/api/phone/{id}",
+            "parameters": [
+                {
+                    "name":"id",
+                    "type":"int", 
+                    "optional":false, 
+                    "description":"ID of existing phone number"
+                }
+            ],
             "examples":[
                 {
-                    "description":"Example of response",
+                    "description":"Example response",
                     "type":"response",
+                    "method":"POST",
                     "protocol":"HTTP/1.1",
                     "status":"200 OK",
                     "headers":[
-			{"key":"Content-Type", "value":"application/json"},
-			{"key":"Status", "value":"200 OK"}
+                        {
+                            "key":"Content-Type",
+                            "value":"application/json"
+                        }
                     ],
-                    "body":["[{'id':1, 'name':'Juan Trump', 'phone':'+52 461 111 11 11'},","{'id':2, 'name':'Juana Clinton', 'phone':'+52 461 111 22 33'}]"]
+                    "body": [
+                        "{",
+                        "    \"success\": true",
+                        "}"
+                    ]
                 }
             ]
-        },
-	{
-	    "title":"Get specific phone number",
-	    "method":"GET",
-	    "description":"Retrieve a single phone number",
-	    "url":"/api/retrieve",
-	    "parameters":[
-		{"name":"id", "type":"int", "optional":false, "description":"ID of the existing phone number"}
-	    ],
-	    "examples":[
-		{
-		    "description":"Example response",
-		    "type":"response",
-		    "method":"GET",
-		    "protocol":"HTTP/1.1",
-		    "status":"200 OK",
-		    "headers":[
-			{"key":"Content-Type", "value":"application/json"},
-			{"key":"Status", "value":"200 OK"}
-		    ],
-		    "body":"{'id':1, 'name':'Juan Trump', 'phone':'+52 461 111 11 11'}"
-		}
-	    ]
-	},
-	{
-            "title":"Update phone number",
-            "method":"POST",
-            "description":"Edit existing phone number.",
-            "url":"/api/update",
-            "parameters":[
-		{"name":"id", "type":"int", "optional":true, "description":"ID of the existing phone number"},
-		{"name":"name", "type":"string", "optional":false, "description":"Name of the owner of the phone number"},
-		{"name":"phone", "type":"string", "optional":false, "description":"Phone number of the owner"}
-	    ],
-            "examples":[
-                {
-                    "description":"Example request",
-                    "type":"request",
-		    "method":"POST",
-                    "protocol":"HTTP/1.1",
-                    "headers":[
-			{"key":"Content-Type", "value":"application/x-www-form-urlencoded"}
-                    ],
-                    "body":"id=1&amp;\nname=Juanito Trump&amp;\nphone=+52 461 000 00 00"
-                },
-		{
-		    "description":"Example response",
-		    "type":"response",
-		    "status":"200 OK",
-		    "protocol":"HTTP/1.1",
-		    "headers":[
-			{"key":"Content-Type", "value":"application/json"},
-			{"key":"Status", "value":"200 OK"}
-		    ],
-		    "body":"{'error':false}"
-		}
-            ]
-        },
-	{
-	    "title":"Delete phone number",
-	    "method":"GET",
-	    "description":"Remove existing phone number permanently.",
-	    "url":"/api/delete",
-	    "parameters":[
-		{"name":"id", "type":"int", "optional":false, "description":"ID of existing phone number"}
-	    ],
-	    "examples":[
-		{
-		    "description":"Example response",
-		    "type":"response",
-		    "method":"POST",
-		    "protocol":"HTTP/1.1",
-		    "status":"200 OK",
-		    "headers":[
-			{"key":"Content-Type", "value":"application/json"},
-			{"key":"Status", "value":"200 OK"}
-		    ],
-		    "body":"{'error':false}"
-		}
-	    ]
-	}
-
+        }
     ]
 }

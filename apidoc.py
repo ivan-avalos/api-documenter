@@ -1,120 +1,78 @@
-#!/usr/bin/python3
-# api-documenter - The simpliest way of documenting your API
-# Copyright (C) 2018  Ivan Avalos <ivan.avalos.diaz@hotmail.com>
-#
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <https://www.gnu.org/licenses/>.
-import json, sys
-from htmldom import htmldom
+import json, sys, getopt, dominate
+from dominate.tags import *
+from dominate.util import raw
 from slugify import slugify
 
-usage="""usage: {0} [--help | --about | --example] input output [css]
+usage="""usage: apidoc [-hadx] -i input -o output -s css
 
 Options:
-    --help     Show this help menu
-    --about    Show about message
-    --example  Show example of input
+    --help          -h  Show this help menu.
+    --about         -a  Show about message.
+    --structure     -x  Show API description structure.
+    ––dark          -d  Use dark theme only for Bootstrap CSS.
+    --input=<file>  -i  JSON formatted input file.
+    --output=<file> -o  HTML formatted output.
+    --style=<file>  -s  Path to CSS style (can be URL).
 
 Example:
-    {0} example.json example.html
-    {0} example.json example.html example.css (override stylesheet)"""
+    apidoc -i example.json -o example.html
+    apidoc -i example.json -o example.html --dark
+    apidoc -i example.json -o example.html  -s example.css
+"""
 
 about="""api-documenter  Copyright (C) 2018  Ivan Avalos <ivan.avalos.diaz@hotmail.com>
 This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
 This is free software, and you are welcome to redistribute it
 under certain conditions; type `show c' for details."""
 
-example="""
-{
-  "title": "API Title",
-  "description": "API Description",
-  "host": "http://endpoint.host",
-  "requests": [
-    {
-      "title": "Request title",
-      "method": "Method",
-      "description": "Request description",
-      "url": "/api/request",
-      "parameters": [
-        {
-          "name": "parameter1",
-          "type": "data type",
-          "optional": false,
-          "description": "Parameter description"
-        }
-      ],
-      "examples": [
-        {
-          "description": "Example request description",
-          "type": "request",
-          "method": "POST",
-          "protocol": "HTTP/1.1",
-          "headers": [
-            {
-              "key": "Header key 1",
-              "value": "Header value1"
-            }
-          ],
-          "body": "single line body"
-        },
-        {
-          "description": "Example response description",
-          "type": "response",
-          "protocol": "HTTP/1.1",
-          "status": "200 OK",
-          "headers": [
-            {
-              "key": "Header key 1",
-              "value": "Header value 1"
-            }
-          ],
-          "body": [
-            "line 1 of body",
-            "line 2 of body",
-            "line 3 of body"
-          ]
-        }
-      ]
-    }
-  ]
-}
+structure="""API:
+    title: string
+    description: string | string[] # string per line
+    host: string
+    requests: Request[]
+    statusCodes: StatusCode[]
+
+Request:
+    title: string
+    method: string
+    description: string | string[]
+    url: string
+    parameters: Parameter[]
+    examples: Example[]
+
+Parameter:
+    name: string
+    type: string
+    optional: boolean
+    description: string
+
+Example(request):
+    description: string | string[]
+    type: "request"
+    protocol: string = 'HTTP/1.1'
+    headers: Header[]
+    body: string | string[]
+
+Example(response):
+    description: string
+    type: "response"
+    protocol: string = 'HTTP/1.1'
+    status: string
+    headers: Header[]
+    body: string[]
+
+Header:
+    key: string
+    value: string
+
+StatusCode:
+    code: string
+    reason: string
+    meaning: string
 """
 
-# Argument validation
-if len(sys.argv) == 2:
-    if sys.argv[1] == '--help':
-        print(usage.format(sys.argv[0]))
-    elif sys.argv[1] == '--about':
-        print(about)
-    elif sys.argv[1] == '--example':
-        print(example)
-    else: print(usage.format(sys.argv[0]))
-    exit()
-if len(sys.argv) < 3:
-    print(usage.format(sys.argv[0]))
-    exit()
-
-# Input files
-input_file=open(sys.argv[1], 'r')
-output_file=open(sys.argv[2], 'w')
-
-code_style="""
-    .card {
-    -webkit-box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
-    -moz-box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
-    box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
-    }
-
+css_style="""
+    /* Prettify CSS styles. */
     pre {
     white-space: pre-wrap;       /* Since CSS 2.1 */
     white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
@@ -124,7 +82,14 @@ code_style="""
     }
     
     /* desert scheme ported from vim to google prettify */
-    pre.prettyprint { display: block; background-color: #333 }
+    pre.prettyprint { 
+    font-family: monospace;
+    font-size: 13px;
+    display: block; 
+    background-color: #1e1e1e;
+    border: 0 !important;
+    margin-bottom: 0px;
+    }
     pre .nocode { background-color: none; color: #000 }
     pre .str { color: #ffa0a0 } /* string  - pink */
     pre .kwd { color: #f0e68c; font-weight: bold }
@@ -157,150 +122,262 @@ code_style="""
     pre .atn, code .atn { color: #404 }
     pre .atv, code .atv { color: #060 }
     }
+
+    /* Other CSS styles. */
+    .example {
+        font-family: monospace;
+    }
 """
 
-# Input data
-json_apidoc=json.loads(input_file.read())
-# Output HTML DOM
-html_apidoc=htmldom.HtmlDom().createDom('<html><head><meta charset="utf-8"><link href="https://raw.githubusercontent.com/google/code-prettify/master/styles/desert.css"></head><body style="background: #f5f8fa"><style>'+code_style+'</style></body><script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script></html>')
+# Argument parsing
+try:
+    opts, args = getopt.getopt(sys.argv[1:], 
+        "haxdi:o:s:", [
+            "help", 
+            "about", 
+            "structure", 
+            "dark", 
+            "input=", 
+            "output=", 
+            "style="
+        ])
+except getopt.GetoptError as err:
+    print(str(err))
+    print(usage)
+    sys.exit(2)
 
-# Base URL
-if 'host' in json_apidoc:
-    api_host=json_apidoc['host']
-else: raise Exception('Missing API host')
+input = None
+output = None
+style = None
+dark = False
 
-dom_body = html_apidoc.find("body")
-dom_head = html_apidoc.find("head")
+for o, _a in opts:
+    if o in ('-h', '--help'):
+        print (usage)
+        sys.exit(0)
+    elif o in ('-a', '--about'):
+        print (about)
+        sys.exit(0)
+    elif o in ('-x', '--structure'):
+        print (structure)
+        sys.exit(0)
+    elif o in ('-i', '--input'):
+        input = _a
+    elif o in ('-o', '--output'):
+        output = _a
+    elif o in ('-s', '--style'):
+        style = _a
+    elif o in ('-d', '--dark'):
+        dark = True
+    else:
+        print (usage)
+        sys.exit(2)
 
-# API Title
-if 'title' in json_apidoc:
-    dom_head.append("<title>"+json_apidoc['title']+"</title>")
-else: raise Exception('Missing API title')
-
-# Optionally override default stylesheet
-if len(sys.argv) >= 4:
-    dom_head.append('<link rel="stylesheet" href="'+sys.argv[3]+'">')
-else:
-    dom_head.append('''<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-    crossorigin="anonymous">''')
-
-dom_body.append("<div class='container'>")
-dom_container = dom_body.find("div.container")
-
-# API Title
-dom_container.append("<h1 class='display-3 mt-3'>"+json_apidoc['title']+"</h1>")
-# API Description
-dom_container.append("<div class='card border-0 mb-3'><div class='card-body'><p class='card-text lead'>"+json_apidoc['description']+"</p></div></div>")
-
-# Request Index
-dom_container.append("<div class='card border-0 mb-3 index'><div class='card-body'><h1>Index</h1></div>")
-dom_index = dom_container.find("div.index").first()
-dom_index_body = dom_index.find("div").first()
-dom_index_body.append("<ol></ol>")
-dom_index_list = dom_index_body.find("ol").first()
-
-# API Requests
-for i in json_apidoc['requests']:
+# Input and output are required
+if input is None or output is None:
+    print ('Input and output required')
+    sys.exit(2)
     
-    # Index
-    dom_index_list.append("<li><a href='#"+slugify(i['title'])+"'>"+i['title']+"</a></li>")
-    
-    dom_container.append("<div class='card border-0 mb-3 mt-3' id='"+slugify(i['title'])+"'></div>")
-    dom_request_card = dom_container.find('div.card').last()
-    # Request Title
-    if 'title' in i: dom_request_card.append("<h1 class='display-5 card-header'>"+i['title']+"</h1>")
-    else: raise Exception('Missing request title')
-    
-    dom_request_card.append("<div class='card-body'></div>")
-    dom_request_card_body = dom_request_card.find('div.card-body').last()
-    
-    # Request Description
-    if 'description' in i: dom_request_card_body.append("<p class='card-text lead'>"+i['description']+"</p>")
-    else: raise Exception('Missing request description')
-    # Request URL
-    if 'method' in i:
-        dom_request_card_body.append("<h5>URL:</h5> <p><code><b>"+i['method']+"</b> "+api_host+i['url']+"</code></p>")
-    else: raise Exception('Missing request method')
-    request_url = i['url']
+# Open files
+input_file = open(input, 'r')
+output_file = open(output, 'w')
 
-    # Request Parameters
-    dom_request_card_body.append("<h5>Parameters</h5>")
-    dom_request_card_body.append("<div class='table-responsive-sm parameters'><table class='table table-striped table-bordered parameters'></table></div>")
-    dom_parameter_table = dom_container.find('div.parameters').last().find('table.parameters').last()
-    dom_parameter_table.append("<thead class='thead-dark'><tr><th>Name</th><th>Type</th><th>Optional</th><th>Description</th></tr></thead>")
-    dom_parameter_table.append("<tbody></tbody>")
-    dom_parameter_tbody = dom_parameter_table.find('tbody')
-    if 'parameters' in i:
-        for j in i['parameters']:
-            dom_parameter_tbody.append("<tr></tr>")
-            dom_parameter_tr = dom_parameter_tbody.find('tr').last()
-            # Parameter Name
-            if 'name' in j: dom_parameter_tr.append("<td>"+j['name']+"</td>")
-            else: raise Exception('Missing parameter name')
-            # Parameter Type
-            if 'type' in j: dom_parameter_tr.append("<td>"+j['type']+"</td>")
-            else: raise Exception('Missing parameter type')
-            # Parameter Optional
-            if 'optional' in j:
-                if j['optional']:
-                    dom_parameter_tr.append("<td>Yes</td>")
-                else:
-                    dom_parameter_tr.append("<td></td>")
-            else: raise Exception('Missing parameter optional')
-            # Parameter Description
-            if 'description' in j: dom_parameter_tr.append("<td>"+j['description']+"</td>")
-            else: raise Exception('Missing parameter description')
+# Parse JSON input
+json_api = json.loads(input_file.read())
 
-    # Request Examples
-    if 'examples' in i:
-        dom_request_card_body.append("<h5>Examples:</h5>")
-        for j in i['examples']:
-            # Example Description
-            if 'description' in j:
-                dom_request_card_body.append("<p>"+j['description']+"</p>")
-            else: raise Exception('Missing example description')
-            
-            dom_request_card_body.append("<table style='font-family: monospace' class='table table-sm table-borderless table-dark example'></table>")
-            dom_example_table = dom_container.find('table.example').last()
-            if 'type' in j:
-                if j['type'] == 'request':
-                    # Example Method and Protocol for Request
-                    if 'method' in j and 'protocol' in j:
-                        dom_example_table.append("<tr><td>"+j['method']+" <b>"+request_url+"</b> "+j['protocol']+"</td></tr>")
-                    elif 'method' in j:
-                        dom_example_table.append("<tr><td>"+j['method']+" <b>"+request_url+"</b></td></tr>")
-                    else: raise Exception('Missing example method')
-                elif j['type'] == 'response':
-                    # Example Method, Protocol and Status for Response
-                    if 'protocol' in j and 'status' in j:
-                        dom_example_table.append("<tr><td>"+j['protocol']+" "+j['status']+"</td></tr>")
-                    elif 'status' in j:
-                        dom_example_table.append("<tr><td>"+j['status']+"</td></tr>")
-                    else: raise Exception('Missing example status '+i['title'])
-                else: raise Exception('Invalid response type of example, must be "request" or "response"')
-            else: raise Exception('Missing example type')
-            
-            # Example Headers
-            if 'headers' in j:
-                for k in j['headers']:
-                    # Header Key and Value
-                    dom_example_table.append("<tr><td>"+k['key']+": "+k['value']+"</td></tr>")
-            
-            # Example Body
-            if 'body' in j:
-                if type(j['body']) is str:
-                    dom_example_table.append("<tr><td><code><pre class='prettyprint'>\b\n"+j['body']+"</pre></code></td></tr>")
-                elif type(j['body']) is list:
-                    body = '\b\n'
-                    for i in j['body']:
-                        body += i + '\n'
-                    body = body[:-1]
-                    dom_example_table.append("<tr><td><code><pre class='prettyprint'>"+body+"</pre></code></td></tr>")
+def get(json, abskey, options=None):
+    key = abskey.split('.')[-1]
+    if key in json:
+        #check if value matches with any option
+        if isinstance(options, list):
+            if json[key] in options:
+                return json[key]
+            else:
+                raise Exception('Parameter "' + abskey + '" must be in ' + str(options))
+        return json[key]
+    else:
+        raise Exception('Missing "' + abskey + '"')
 
-# Footer
-dom_body.append('''<footer><div class="container py-5">
-            <p class="mb-0 text-uppercase font-weight-bold small text-justify"><a href="https://github.com/ivan-avalos/api-documenter" class="text-muted float-right" rel="noopener">Documentation generated with api-documenter</a></p></footer>''')
+def get_multiline(json, abskey):
+    get(json, abskey)
+    key = abskey.split('.')[-1]
+    if isinstance(json[key], str): #single line description
+        return json[key]
+    elif isinstance(json[key], list): #multi line description
+        return ' '.join(json[key])
+    else: raise Exception('Parameter "' + abskey + '" should be of type str or list')
 
-# Print DOM and write it to output file
-#print(html_apidoc.find('html').html())
-output_file.write(html_apidoc.find('html').html())
+def get_code(json, abskey):
+    get_multiline(json, abskey)
+    key = abskey.split('.')[-1]
+    if isinstance(json[key], str): #single line code
+        return json[key]
+    elif isinstance(json[key], list): #multi line code
+        return '\n'.join(json[key])
+
+# CSS Styles
+bootstrap_css = 'https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css'
+external_styles = [
+    'https://raw.githubusercontent.com/google/code-prettify/master/styles/desert.css'
+]
+external_scripts = [
+    'https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js'
+]
+css_style += ("""
+    body {
+    background: #252526;
+    color: white;
+    }
+    .card {
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,1);
+    -moz-box-shadow: 0px 2px 4px 0px rgba(0,0,0,1);
+    box-shadow: 0px 2px 4px 0px rgba(0,0,0,1);
+    }
+""" if dark else """
+    body {
+    background: #f8fafc;
+    color: black;
+    }
+    .card {
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
+    -moz-box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
+    box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
+    }
+""")
+
+# CSS Classes
+card = 'card border-0 mb-3 bg-dark' if dark else 'card border-0 mb-3'
+_a = 'text-white' if dark else ''
+_table = \
+'table table-dark table-striped table-bordered' if dark else  \
+'table table-striped table-bordered'
+http_table = 'table table-sm table-borderless table-dark example'
+
+# Start creating HTML output
+html_output = html()
+with html_output:
+    with head():
+        meta(charset='utf-8')
+        meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+
+        # api.title
+        title(get(json_api, 'api.title'))
+
+        # css
+        link(rel='stylesheet', type='text/css', href=style if style else bootstrap_css)
+        for s in external_styles: 
+            link(type='text/css', href=s)
+        raw('\n<style>' + css_style + '</style>\n')
+    # api
+    with body():
+        with div(_class='container'):
+            # api.title
+            h1(get(json_api, 'api.title'), _class='display-4 mt-3')
+
+            index_root = div(_class=card)
+            index_body = index_root.add(div(_class='card-body'))
+            with index_body:
+                # api.description
+                p(raw(get_multiline(json_api, 'api.description')), _class='card-text lead')
+                # api.statusCodes
+                h1('Status codes')
+                with table(_class=_table):
+                    with thead():
+                        with tr():
+                            th('Status code')
+                            th('Reason')
+                            th('Meaning')
+                    with tbody():
+                        for status in json_api['statusCodes']:
+                            with tr():
+                                td(get(status, 'code'))
+                                td(get(status, 'reason'))
+                                td(get(status, 'meaning'))
+                # index
+                h1('Index')
+            index = index_body.add(ol())
+
+            # api.requests
+            for i, request in enumerate(get(json_api, 'api.requests')):
+                # add to index
+                index += li(a(get(request, 'api.request.title'),
+                    href='#' + str(i), _class=_a), __pretty=False)
+                
+                with div(_class=card, id=i):
+                    with div(_class='card-header'):
+                        # api.request.title
+                        h1(get(request, 'api.request.title'), _class='display-5')
+                    with div(_class='card-body'):
+                        # api.request.description
+                        p(raw(get_multiline(request, 'api.request.description')), _class='card-text lead')
+                        # api.request.url
+                        h3('URL')
+                        with p():
+                            with code():
+                                b(get(request, 'api.request.method'))
+                                span(get(request, 'api.request.url'))
+                        # api.request.parameters (optional)
+                        if 'parameters' in request and len(request['parameters']) > 0:
+                            h3('Parameters')
+                            with div(_class='table-responsive-sm'):
+                                with table(_class=_table):
+                                    with thead():
+                                        with tr():
+                                            th('Name')
+                                            th('Type')
+                                            th('Optional')
+                                            th('Description')
+                                    with tbody():
+                                        for param in request['parameters']:
+                                            with tr():
+                                                td(get(param, 'name'))
+                                                td(get(param, 'type'))
+                                                td('Yes' if get(param, 'optional') else '')
+                                                td(get(param, 'description'))
+                        # api.request.examples (optional)
+                        if 'examples' in request and len(request['examples']) > 0:
+                            h3('Examples')
+                            for example in request['examples']:
+                                # api.request.example.type
+                                if get(example, 'api.request.example.type', options=['request', 'response']):
+                                    if example['type'] == 'request':
+                                        span('Request', _class='card-text lead')
+                                    elif example['type'] == 'response':
+                                        span('Response', _class='card-text lead')
+                                # api.request.example.description
+                                if 'description' in example:
+                                    p(raw(get_multiline(example, 'api.request.example.description')))
+
+                                with table(_class=http_table):
+                                    with tr():
+                                        with td():
+                                            # api.request.example.protocol (optional)
+                                            if 'protocol' in example:
+                                                span(example['protocol'])
+                                            else: 
+                                                span('HTTP/1.1')
+                                            
+                                            # api.request.example.{method, url}
+                                            if example['type'] == 'request':
+                                                b(request['method'])
+                                                b(request['url'])
+                                            # api.request.example.{status}
+                                            elif example['type'] == 'response':
+                                                span(get(example, 'status'))
+                                    # api.request.example.headers (optional)
+                                    if 'headers' in example:
+                                        for header in example['headers']:
+                                            tr(td(get(header, 'key') + ': ' + get(header, 'value')))
+                                    # api.request.example.body (optional)
+                                    if 'body' in example:
+                                        with tr():
+                                            with td():
+                                                pre(get_code(example, 'body'), _class='prettyprint')
+
+        # external scripts
+        for js in external_scripts:
+            script(src=js)
+
+
+print (html_output.render())
+output_file.write(html_output.render())

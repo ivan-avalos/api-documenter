@@ -1,15 +1,18 @@
-# api-documenter - easiest way of document your APIs
+# api-documenter <small style="color: #505050">the easiest way</small>
 
-api-documenter is a simple Python script that allows you to generate beautiful HTML documentation from a JSON file with a single command.
+# JSON to HTML
+
+api-documenter is a simple script that allows you to generate beautiful HTML documentation from a JSON description file easily.
 
 ## Requirements
-- **Python** >= 3
-- **python-slugify** >= 1.2.6
+- Python >= 3
+- python-slugify >= 1.2.6
+- dominate >= 2.3.5
 
 ## Credits
 | Library | Autor | License | Website |
 |---------|--------|--------|---------|
-|htmldom|Bhimsen.S.Kulkarni|BSD|<https://pypi.org/project/htmldom/>|
+|dominate|Tom Flanagan and Jake Wharton|LGPL v3.0|<https://github.com/Knio/dominate>|
 |slugify|Val Neekman|MIT|<https://github.com/un33k/python-slugify>|
 
 ## Installation
@@ -21,140 +24,122 @@ chmod +x install.sh
 apidoc --help
 ```
 
-## Structure
+## Description structure
 
-### API
-
-```json
-{
-  "title": "API Title",
-  "description": "API Description",
-  "host": "http://endpoint.host",
-  "requests": [], optional
-}
+### API <small>(root)</small>
+```typescript
+title: string
+description: string | string[]
+host: string
+requests: Request[]
+statusCodes: StatusCode[]
 ```
 
 ### Request
-
-```json
-{
-  "title": "Request title",
-  "method": "Method",
-  "description": "Request description",
-  "url": "/api/request",
-  "parameters": [], optional
-  "examples":[] optional
-  
-}
+```typescript
+title: string
+method: string
+description: string | string[]
+url: string
+parameters: Parameter[]
+examples: Example[]
 ```
 
 ### Parameter
-
-```json
-{
-  "name": "parameter1",
-  "type": "data type",
-  "optional": false,
-  "description": "Parameter description"
-}
+```typescript
+name: string
+type: string
+optional: boolean
+description: string
 ```
 
-### Request example
+### Example (request)
+```typescript
+description: string | string[]
+type: 'request'
+protocol: string = 'HTTP/1.1'
+headers: Header[]
+body: string | string[]
+```
 
-```json
-{
-  "description": "Example request description",
-  "type": "request",
-  "method": "POST",
-  "protocol": "HTTP/1.1", optional
-  "headers": [ optional
-    {
-      "key": "Header key 1",
-      "value": "Header value 1"
-    }
+### Example (response)
+```typescript
+description: string
+type: 'response'
+protocol: string = 'HTTP/1.1'
+status: string
+headers: Header[]
+body: string[]
+```
+
+### Header
+```typescript
+key: string
+value: string
+```
+
+### StatusCode
+```typescript
+code: number
+reason: string
+meaning: string
+```
+
+## Full structure
+```typescript
+API:
+	title: string
+	description: string
+	host: string
+	requests: [
+		Request:
+			title: string
+    		method: string
+    		description: string | string[]
+    		url: string
+    		parameters: [
+	    		Parameter:
+	    			name: string
+	    			type: string
+	    			optional: boolean
+	    			description: string
+    		]
+    		examples: [
+    			Example(request):
+    				description: string | string[]
+    				type: 'request'
+    				protocol: string = 'HTTP/1.1'
+    				headers: [
+    					Header:
+    						key: string
+    						value: string
+    				]
+    				body: string | string[]
+    			Example(response):
+    				description: string | string[]
+    				type: 'response'
+    				protocol: string = 'HTTP/1.1'
+    				status: string
+    				headers: [
+    					Header:
+    						key: string
+    						value: string
+    				]
+    				body: string | string[]
+    		]
   ],
-  "body": [ optional
-    "line 1 of body",
-    "line 2 of body"
+  statusCodes: [
+  	StatusCode:
+  		code: string
+  		reason: string
+  		meaning: string
   ]
-}
 ```
 
-### Response example
-
-```json
-{
-  "description": "Example response description",
-  "type": "response",
-  "protocol": "HTTP/1.1", optional
-  "status": "200 OK",
-  "headers": [ optional
-    {
-      "key": "Header key 1",
-      "value": "Header value 1"
-    },
-  ],
-  "body": [ optional
-    "line 1 of body",
-    "line 2 of body",
-  ]
-}
+## License <small>(GPLv3)</small>
 ```
-
-### Full structure
-
-```json
-{
-  "title": "API Title",
-  "description": "API Description",
-  "host": "http://endpoint.host",
-  "requests": [
-    {
-      "title": "Request title",
-      "method": "Method",
-      "description": "Request description",
-      "url": "/api/request",
-      "parameters": [
-        {
-          "name": "parameter1",
-          "type": "data type",
-          "optional": false,
-          "description": "Parameter description"
-        }
-      ],
-      "examples": [
-        {
-          "description": "Example request description",
-          "type": "request",
-          "method": "POST",
-          "protocol": "HTTP/1.1",
-          "headers": [
-            {
-              "key": "Header key 1",
-              "value": "Header value1"
-            }
-          ],
-          "body": "single line body"
-        },
-        {
-          "description": "Example response description",
-          "type": "response",
-          "protocol": "HTTP/1.1",
-          "status": "200 OK",
-          "headers": [
-            {
-              "key": "Header key 1",
-              "value": "Header value 1"
-            }
-          ],
-          "body": [
-            "line 1 of body",
-            "line 2 of body",
-            "line 3 of body"
-          ]
-        }
-      ]
-    }
-  ]
-}
+api-documenter  Copyright (C) 2018  Ivan Avalos <ivan.avalos.diaz@hotmail.com>
+This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
+This is free software, and you are welcome to redistribute it
+under certain conditions; type `show c' for details.
 ```
