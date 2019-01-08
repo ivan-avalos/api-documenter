@@ -373,6 +373,14 @@ with html_output:
                                         with tr():
                                             with td():
                                                 code(pre(get_code(example, 'body'),  _class='prettyprint'))
+        # footer
+        with footer():
+            with div(_class='container py-5'):
+                with p(_class='mb-0 text-uppercase font-weight-bold small text-justify'):
+                    a('Documentation generated with api-documenter', 
+                        href='https://github.com/ivan-avalos/api-documenter', 
+                        _class='text-muted float-right',
+                        rel='noopener')
 
         # external scripts
         for js in external_scripts:
