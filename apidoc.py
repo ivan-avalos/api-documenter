@@ -74,6 +74,7 @@ StatusCode:
 css_style="""
     /* Prettify CSS styles. */
     pre {
+    white-space: pre-line;
     white-space: pre-wrap;       /* Since CSS 2.1 */
     white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
     white-space: -pre-wrap;      /* Opera 4-6 */
@@ -85,7 +86,6 @@ css_style="""
     pre.prettyprint { 
     font-family: monospace;
     font-size: 13px;
-    display: block; 
     background-color: #1e1e1e;
     border: 0 !important;
     margin-bottom: 0px;
@@ -272,7 +272,7 @@ with html_output:
     with body():
         with div(_class='container'):
             # api.title
-            h1(get(json_api, 'api.title'), _class='display-4 mt-3')
+            h1(raw(get(json_api, 'api.title')), _class='display-4 mt-3')
 
             index_root = div(_class=card)
             index_body = index_root.add(div(_class='card-body'))
@@ -300,13 +300,13 @@ with html_output:
             # api.requests
             for i, request in enumerate(get(json_api, 'api.requests')):
                 # add to index
-                index += li(a(get(request, 'api.request.title'),
+                index += li(a(raw(get(request, 'api.request.title')),
                     href='#' + str(i), _class=_a), __pretty=False)
                 
                 with div(_class=card, id=i):
                     with div(_class='card-header'):
                         # api.request.title
-                        h1(get(request, 'api.request.title'), _class='display-5')
+                        h1(raw(get(request, 'api.request.title')), _class='display-5')
                     with div(_class='card-body'):
                         # api.request.description
                         p(raw(get_multiline(request, 'api.request.description')), _class='card-text lead')
@@ -372,7 +372,7 @@ with html_output:
                                     if 'body' in example:
                                         with tr():
                                             with td():
-                                                pre(get_code(example, 'body'), _class='prettyprint')
+                                                code(pre(get_code(example, 'body'),  _class='prettyprint'))
 
         # external scripts
         for js in external_scripts:
