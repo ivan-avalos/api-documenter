@@ -315,7 +315,9 @@ with html_output:
                         with p():
                             with code():
                                 b(get(request, 'api.request.method'))
-                                span(get(request, 'api.request.url'))
+                                span(
+                                    get(json_api, 'api.host').strip('/'), '/',
+                                    get(request, 'api.request.url').strip('/'))
                         # api.request.parameters (optional)
                         if 'parameters' in request and len(request['parameters']) > 0:
                             h3('Parameters')
@@ -361,7 +363,7 @@ with html_output:
                                             if example['type'] == 'request':
                                                 b(request['method'])
                                                 b(request['url'])
-                                            # api.request.example.{status}
+                                            # api.request.example.status
                                             elif example['type'] == 'response':
                                                 span(get(example, 'status'))
                                     # api.request.example.headers (optional)
