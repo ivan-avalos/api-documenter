@@ -8,6 +8,7 @@
 <style>
     /* Prettify CSS styles. */
     pre {
+    white-space: pre-line;
     white-space: pre-wrap;       /* Since CSS 2.1 */
     white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
     white-space: -pre-wrap;      /* Opera 4-6 */
@@ -19,7 +20,6 @@
     pre.prettyprint { 
     font-family: monospace;
     font-size: 13px;
-    display: block; 
     background-color: #1e1e1e;
     border: 0 !important;
     margin-bottom: 0px;
@@ -80,6 +80,7 @@
       <div class="card border-0 mb-3 bg-dark">
         <div class="card-body">
           <p class="card-text lead">This is an example CRUD for a phone directory JSON API REST, it includes some of the most basic database operations like creating, reading, updating and deleting (CRUD).</p>
+          <h1>Index</h1>
           <h1>Status codes</h1>
           <table class="table table-dark table-striped table-bordered">
             <thead>
@@ -122,7 +123,6 @@
               </tr>
             </tbody>
           </table>
-          <h1>Index</h1>
           <ol>
             <li><a class="text-white" href="#0">Create a phone number</a></li>
             <li><a class="text-white" href="#1">Get all phone numbers</a></li>
@@ -142,7 +142,7 @@
           <p>
             <code>
               <b>POST</b>
-              <span>/api/phone</span>
+              <span>http://crud.host/api/phone</span>
             </code>
           </p>
           <h3>Parameters</h3>
@@ -177,9 +177,9 @@
           <table class="table table-sm table-borderless table-dark example">
             <tr>
               <td>
-                <span>HTTP/1.1</span>
                 <b>POST</b>
                 <b>/api/phone</b>
+                <span>HTTP/1.1</span>
               </td>
             </tr>
             <tr>
@@ -193,10 +193,12 @@
             </tr>
             <tr>
               <td>
-                <pre class="prettyprint">{
+                <code>
+                  <pre class="prettyprint">{
     &quot;name&quot;:&quot;Andrés Trump&quot;,
     &quot;phone&quot;:&quot;+52 461 111 1111&quot;,
 }</pre>
+                </code>
               </td>
             </tr>
           </table>
@@ -204,8 +206,8 @@
           <table class="table table-sm table-borderless table-dark example">
             <tr>
               <td>
-                <span>HTTP/1.1</span>
                 <span>200 OK</span>
+                <span>HTTP/1.1</span>
               </td>
             </tr>
             <tr>
@@ -213,9 +215,11 @@
             </tr>
             <tr>
               <td>
-                <pre class="prettyprint">{
+                <code>
+                  <pre class="prettyprint">{
     &quot;success&quot;: true
 }</pre>
+                </code>
               </td>
             </tr>
           </table>
@@ -231,7 +235,7 @@
           <p>
             <code>
               <b>GET</b>
-              <span>/api/phone</span>
+              <span>http://crud.host/api/phone</span>
             </code>
           </p>
           <h3>Examples</h3>
@@ -240,8 +244,8 @@
           <table class="table table-sm table-borderless table-dark example">
             <tr>
               <td>
-                <span>HTTP/1.1</span>
                 <span>200 OK</span>
+                <span>HTTP/1.1</span>
               </td>
             </tr>
             <tr>
@@ -249,7 +253,8 @@
             </tr>
             <tr>
               <td>
-                <pre class="prettyprint">[
+                <code>
+                  <pre class="prettyprint">[
     {
         &quot;id&quot;: 1,
         &quot;name&quot;: &quot;Andrés Trump&quot;,
@@ -266,6 +271,7 @@
         &quot;phone&quot;: &quot;+1 628 222 3344&quot;
     }
 ]</pre>
+                </code>
               </td>
             </tr>
           </table>
@@ -281,7 +287,7 @@
           <p>
             <code>
               <b>GET</b>
-              <span>/api/phone/{id}</span>
+              <span>http://crud.host/api/phone/{id}</span>
             </code>
           </p>
           <h3>Parameters</h3>
@@ -311,8 +317,8 @@
           <table class="table table-sm table-borderless table-dark example">
             <tr>
               <td>
-                <span>HTTP/1.1</span>
                 <span>200 OK</span>
+                <span>HTTP/1.1</span>
               </td>
             </tr>
             <tr>
@@ -320,11 +326,13 @@
             </tr>
             <tr>
               <td>
-                <pre class="prettyprint">{
+                <code>
+                  <pre class="prettyprint">{
     &quot;id&quot;: 1,
     &quot;name&quot;: &quot;Andrés Trump&quot;,
     &quot;phone&quot;: &quot;+52 461 111 1111&quot;
 }</pre>
+                </code>
               </td>
             </tr>
           </table>
@@ -340,7 +348,7 @@
           <p>
             <code>
               <b>PUT</b>
-              <span>/api/phone/{id}</span>
+              <span>http://crud.host/api/phone/{id}</span>
             </code>
           </p>
           <h3>Parameters</h3>
@@ -382,9 +390,9 @@
           <table class="table table-sm table-borderless table-dark example">
             <tr>
               <td>
-                <span>HTTP/1.1</span>
                 <b>PUT</b>
                 <b>/api/phone/{id}</b>
+                <span>HTTP/1.1</span>
               </td>
             </tr>
             <tr>
@@ -398,10 +406,12 @@
             </tr>
             <tr>
               <td>
-                <pre class="prettyprint">{
+                <code>
+                  <pre class="prettyprint">{
     &quot;name&quot;: &quot;Enrique Peña Bush&quot;,
     &quot;phone&quot;: &quot;+1 628 000 3355&quot;,
 }</pre>
+                </code>
               </td>
             </tr>
           </table>
@@ -410,8 +420,8 @@
           <table class="table table-sm table-borderless table-dark example">
             <tr>
               <td>
-                <span>HTTP/1.1</span>
                 <span>200 OK</span>
+                <span>HTTP/1.1</span>
               </td>
             </tr>
             <tr>
@@ -419,9 +429,11 @@
             </tr>
             <tr>
               <td>
-                <pre class="prettyprint">{
+                <code>
+                  <pre class="prettyprint">{
     &quot;success&quot;: true
 }</pre>
+                </code>
               </td>
             </tr>
           </table>
@@ -437,7 +449,7 @@
           <p>
             <code>
               <b>DELETE</b>
-              <span>/api/phone/{id}</span>
+              <span>http://crud.host/api/phone/{id}</span>
             </code>
           </p>
           <h3>Parameters</h3>
@@ -467,8 +479,8 @@
           <table class="table table-sm table-borderless table-dark example">
             <tr>
               <td>
-                <span>HTTP/1.1</span>
                 <span>200 OK</span>
+                <span>HTTP/1.1</span>
               </td>
             </tr>
             <tr>
@@ -476,15 +488,24 @@
             </tr>
             <tr>
               <td>
-                <pre class="prettyprint">{
+                <code>
+                  <pre class="prettyprint">{
     &quot;success&quot;: true
 }</pre>
+                </code>
               </td>
             </tr>
           </table>
         </div>
       </div>
     </div>
+    <footer>
+      <div class="container py-5">
+        <p class="mb-0 text-uppercase font-weight-bold small text-justify">
+          <a class="text-muted float-right" href="https://github.com/ivan-avalos/api-documenter" rel="noopener">Documentation generated with api-documenter</a>
+        </p>
+      </div>
+    </footer>
     <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
   </body>
 </html>

@@ -369,12 +369,6 @@ with html_output:
                                 with table(_class=http_table):
                                     with tr():
                                         with td():
-                                            # api.request.example.protocol (optional)
-                                            if 'protocol' in example:
-                                                span(example['protocol'])
-                                            else: 
-                                                span('HTTP/1.1')
-                                            
                                             # api.request.example.{method, url}
                                             if example['type'] == 'request':
                                                 b(request['method'])
@@ -382,6 +376,13 @@ with html_output:
                                             # api.request.example.status
                                             elif example['type'] == 'response':
                                                 span(get(example, 'status'))
+
+                                            # api.request.example.protocol (optional)
+                                            if 'protocol' in example:
+                                                span(example['protocol'])
+                                            else: 
+                                                span('HTTP/1.1')
+                                                
                                     # api.request.example.headers (optional)
                                     if 'headers' in example:
                                         for header in example['headers']:
