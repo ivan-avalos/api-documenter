@@ -4,6 +4,10 @@
 
 api-documenter is a simple script that allows you to generate beautiful HTML documentation from a JSON description file easily.
 
+## Demo
+
+You can find a nice demo <a href="https://ivan-avalos.github.io/api-documenter/">here</a>.
+
 ## Requirements
 - Python >= 3
 - python-slugify >= 1.2.6
@@ -101,56 +105,7 @@ apidoc --help
 }
 ```
 
-## Full structure
-```typescript
-{
-    title: string,
-    description: string,
-    host: string,
-    requests: [
-        {
-            title: string,
-            method: string,
-            description: string | string [],
-            url: string,
-            parameters: [
-                {
-                    name: string,
-                    type: string,
-                    optional: boolean,
-                    description: string
-                }
-            ],
-            examples: [
-                { // request
-                    description: string | string[],
-                    type: 'request',
-                    protocol: string = 'HTTP/1.1',
-                    headers: Header[],
-                    body: string | string[]
-                },
-                { // response
-                    description: string,
-                    type: 'response',
-                    protocol: string = 'HTTP/1.1',
-                    status: string,
-                    headers: Header[],
-                    body: string[]
-                }
-            ]
-        }
-    ],
-    statusCodes: [
-        {
-            code: string,
-            reason: string,
-            meaning: string
-        }
-    ]
-}
-```
-
-## License <small>(GPLv3)</small>
+## License (GPLv3)
 ```
 api-documenter  Copyright (C) 2018  Ivan Avalos <ivan.avalos.diaz@hotmail.com>
 This program comes with ABSOLUTELY NO WARRANTY; for details type `show w'.
