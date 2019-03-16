@@ -295,6 +295,12 @@ with html_output:
             with index_body:
                 # api.description
                 p(raw(get_multiline(json_api, 'api.description')), _class='card-text lead')
+                
+                # api.host
+                p(b('Endpoint:'),
+                  code (raw('&nbsp;'), get (json_api, 'api.host')),
+                  __pretty=False)
+
                 # api.statusCodes
                 h1('Status codes')
                 with table(_class=_table):
@@ -316,13 +322,20 @@ with html_output:
             # api.requests
             for i, request in enumerate(get(json_api, 'api.requests')):
                 # add to index
-                index += li(a(raw(get(request, 'api.request.title')),
-                    href='#' + str(i), _class=_a), __pretty=False)
+                index_element = li(__pretty=False)
+                with index_element:
+                    with code():
+                        b(get(request, 'api.request.method'))
+                        span (' ',
+                              span('/', get(request, 'api.request.url').strip('/') + ' '))
+                    a(raw(get(request, 'api.request.title')),
+                      href='#' + str(i), _class=_a, __pretty=False)
+                index += index_element
                 
                 with div(_class=card, id=i):
                     with div(_class='card-header'):
                         # api.request.title
-                        h1(raw(get(request, 'api.request.title')), _class='display-5')
+                        h1(raw(str(i+1) + '. ' + get(request, 'api.request.title')), _class='display-5')
                     with div(_class='card-body'):
                         # api.request.description
                         p(raw(get_multiline(request, 'api.request.description')), _class='card-text lead')

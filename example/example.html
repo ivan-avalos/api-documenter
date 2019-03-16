@@ -63,13 +63,13 @@
     }
 
     body {
-    background: #252526;
-    color: white;
+    background: #f8fafc;
+    color: black;
     }
     .card {
-    -webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,1);
-    -moz-box-shadow: 0px 2px 4px 0px rgba(0,0,0,1);
-    box-shadow: 0px 2px 4px 0px rgba(0,0,0,1);
+    -webkit-box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
+    -moz-box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
+    box-shadow: 0px 2px 4px 0px rgba(191,191,191,1);
     }
 </style>
 
@@ -77,12 +77,12 @@
   <body>
     <div class="container">
       <h1 class="display-4 mt-3">Phone directory CRUD API</h1>
-      <div class="card border-0 mb-3 bg-dark">
+      <div class="card border-0 mb-3">
         <div class="card-body">
           <p class="card-text lead">This is an example CRUD for a phone directory JSON API REST, it includes some of the most basic database operations like creating, reading, updating and deleting (CRUD).</p>
-          <h1>Index</h1>
+          <p><b>Endpoint:</b><code>&nbsp;http://crud.host</code></p>
           <h1>Status codes</h1>
-          <table class="table table-dark table-striped table-bordered">
+          <table class="table table-striped table-bordered">
             <thead>
               <tr>
                 <th>Status code</th>
@@ -123,18 +123,19 @@
               </tr>
             </tbody>
           </table>
+          <h1>Index</h1>
           <ol>
-            <li><a class="text-white" href="#0">Create a phone number</a></li>
-            <li><a class="text-white" href="#1">Get all phone numbers</a></li>
-            <li><a class="text-white" href="#2">Get specific phone number</a></li>
-            <li><a class="text-white" href="#3">Update phone number</a></li>
-            <li><a class="text-white" href="#4">Delete phone number</a></li>
+            <li><code><b>POST</b><span> <span>/api/phone </span></span></code><a class="" href="#0">Create a phone number</a></li>
+            <li><code><b>GET</b><span> <span>/api/phone </span></span></code><a class="" href="#1">Get all phone numbers</a></li>
+            <li><code><b>GET</b><span> <span>/api/phone/{id} </span></span></code><a class="" href="#2">Get specific phone number</a></li>
+            <li><code><b>PUT</b><span> <span>/api/phone/{id} </span></span></code><a class="" href="#3">Update phone number</a></li>
+            <li><code><b>DELETE</b><span> <span>/api/phone/{id} </span></span></code><a class="" href="#4">Delete phone number</a></li>
           </ol>
         </div>
       </div>
-      <div class="card border-0 mb-3 bg-dark" id="0">
+      <div class="card border-0 mb-3" id="0">
         <div class="card-header">
-          <h1 class="display-5">Create a phone number</h1>
+          <h1 class="display-5">1. Create a phone number</h1>
         </div>
         <div class="card-body">
           <p class="card-text lead">Insert a phone number into database.</p>
@@ -147,7 +148,7 @@
           </p>
           <h3>Parameters</h3>
           <div class="table-responsive-sm">
-            <table class="table table-dark table-striped table-bordered">
+            <table class="table table-striped table-bordered">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -225,9 +226,9 @@
           </table>
         </div>
       </div>
-      <div class="card border-0 mb-3 bg-dark" id="1">
+      <div class="card border-0 mb-3" id="1">
         <div class="card-header">
-          <h1 class="display-5">Get all phone numbers</h1>
+          <h1 class="display-5">2. Get all phone numbers</h1>
         </div>
         <div class="card-body">
           <p class="card-text lead">Retrieve all the phone numbers in the database.</p>
@@ -277,9 +278,9 @@
           </table>
         </div>
       </div>
-      <div class="card border-0 mb-3 bg-dark" id="2">
+      <div class="card border-0 mb-3" id="2">
         <div class="card-header">
-          <h1 class="display-5">Get specific phone number</h1>
+          <h1 class="display-5">3. Get specific phone number</h1>
         </div>
         <div class="card-body">
           <p class="card-text lead">Retrieve a single phone number from the database.</p>
@@ -292,7 +293,7 @@
           </p>
           <h3>Parameters</h3>
           <div class="table-responsive-sm">
-            <table class="table table-dark table-striped table-bordered">
+            <table class="table table-striped table-bordered">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -338,9 +339,9 @@
           </table>
         </div>
       </div>
-      <div class="card border-0 mb-3 bg-dark" id="3">
+      <div class="card border-0 mb-3" id="3">
         <div class="card-header">
-          <h1 class="display-5">Update phone number</h1>
+          <h1 class="display-5">4. Update phone number</h1>
         </div>
         <div class="card-body">
           <p class="card-text lead">Edit existing phone number in database.</p>
@@ -353,7 +354,7 @@
           </p>
           <h3>Parameters</h3>
           <div class="table-responsive-sm">
-            <table class="table table-dark table-striped table-bordered">
+            <table class="table table-striped table-bordered">
               <thead>
                 <tr>
                   <th>Name</th>
@@ -439,9 +440,9 @@
           </table>
         </div>
       </div>
-      <div class="card border-0 mb-3 bg-dark" id="4">
+      <div class="card border-0 mb-3" id="4">
         <div class="card-header">
-          <h1 class="display-5">Delete phone number</h1>
+          <h1 class="display-5">5. Delete phone number</h1>
         </div>
         <div class="card-body">
           <p class="card-text lead">Remove existing phone number from database permanently.</p>
@@ -454,7 +455,7 @@
           </p>
           <h3>Parameters</h3>
           <div class="table-responsive-sm">
-            <table class="table table-dark table-striped table-bordered">
+            <table class="table table-striped table-bordered">
               <thead>
                 <tr>
                   <th>Name</th>
